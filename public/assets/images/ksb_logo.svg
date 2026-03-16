@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 63" width="300" height="63">
+  <rect width="300" height="63" fill="none" />
+  
+  <text x="10" y="32" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#FFFFFF" text-anchor="start">
+    KSB
+  </text>
+  
+  <text x="10" y="52" font-family="Arial, sans-serif" font-weight="normal" font-size="16" fill="#FFFFFF" text-anchor="start">
+    HOMES
+  </text>
+</svg>
