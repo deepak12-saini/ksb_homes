@@ -76,6 +76,7 @@
                     </a>
                 @endforeach
             </div>
+            
             <div class="projects-grid__action">
                 <a href="{{ url('/projects') }}" class="btn btn--primary">View Collection</a>
             </div>

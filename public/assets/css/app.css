@@ -513,6 +513,124 @@ ul {
     margin-bottom: var(--space-xl);
 }
 
+/* Contact page layout */
+.contact-page .section__inner {
+    max-width: var(--container-max);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+    gap: var(--space-xl);
+}
+
+.contact-info__block {
+    margin-bottom: var(--space-lg);
+}
+
+.contact-info__heading {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 var(--space-xs);
+}
+
+.contact-info__text {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+.contact-form__intro {
+    font-size: 0.9375rem;
+    margin: 0 0 var(--space-md);
+}
+
+.contact-form__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-md);
+}
+
+.contact-form__field {
+    margin-bottom: var(--space-md);
+    grid-column: span 2;
+}
+
+.contact-form__field:nth-child(1),
+.contact-form__field:nth-child(2),
+.contact-form__field:nth-child(3),
+.contact-form__field:nth-child(4),
+.contact-form__field:nth-child(5),
+.contact-form__field:nth-child(6) {
+    grid-column: span 2;
+}
+
+.contact-form__label {
+    display: block;
+    font-size: 0.8125rem;
+    margin-bottom: var(--space-xs);
+}
+
+.contact-form__input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 999px;
+    border: 1px solid #d4d4d4;
+    font-size: 0.9375rem;
+}
+
+.contact-form__textarea {
+    border-radius: 1rem;
+    resize: vertical;
+}
+
+.contact-form__field--checkbox {
+    grid-column: span 2;
+}
+
+.contact-form__checkbox-label {
+    font-size: 0.8125rem;
+    color: #1a1a1a;
+}
+
+.contact-form__submit {
+    grid-column: span 2;
+    width: 100%;
+    margin-top: var(--space-sm);
+}
+
+.contact-form__error {
+    margin-top: var(--space-xs);
+    font-size: 0.75rem;
+    color: #dc2626;
+}
+
+.contact-form__message {
+    font-size: 0.875rem;
+    margin-bottom: var(--space-md);
+}
+
+.contact-form__message--success {
+    color: #16a34a;
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form__form {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form__field,
+    .contact-form__field--checkbox,
+    .contact-form__submit {
+        grid-column: span 1;
+    }
+}
+
 /* Buttons / links */
 .btn {
     display: inline-block;
