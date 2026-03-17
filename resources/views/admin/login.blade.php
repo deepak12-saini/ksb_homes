@@ -17,13 +17,16 @@
 <body>
     <div class="login-card">
         <h1>Admin Login</h1>
-        @if ($errors->has('password'))
-            <p class="error">{{ $errors->first('password') }}</p>
+        @if ($errors->has('username'))
+            <p class="error">{{ $errors->first('username') }}</p>
         @endif
         <form method="post" action="{{ route('admin.login.submit') }}">
             @csrf
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" value="{{ old('username') }}" required autofocus>
+
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" required autofocus>
+            <input type="password" name="password" id="password" required>
             <button type="submit">Login</button>
         </form>
     </div>

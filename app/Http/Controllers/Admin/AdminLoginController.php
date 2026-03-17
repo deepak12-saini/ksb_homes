@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,15 +17,23 @@ class AdminLoginController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        $password = config('app.admin_password', env('ADMIN_PASSWORD', 'admin'));
-        $request->validate(['password' => 'required']);
+        $credentials = $request->validate([
+            'username' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
 
-        if ($request->input('password') === $password) {
+        // NOTE: This uses MD5 for compatibility with an existing database.
+        // MD5 is not recommended for new applications.
+        $user = User::where('email', $credentials['username'])->first();
+
+        if ($user && $user->password === md5($credentials['password'])) {
             session(['admin_authenticated' => true]);
             return redirect()->route('admin.dashboard');
         }
 
-        return back()->withErrors(['password' => 'Invalid password.']);
+        return back()
+            ->withErrors(['username' => 'Invalid username or password.'])
+            ->withInput($request->only('username'));
     }
 
     public function logout(Request $request): RedirectResponse
