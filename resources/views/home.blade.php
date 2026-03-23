@@ -1,6 +1,7 @@
 @extends('layout')
 
-@section('title', 'KSB homes Design + Construct – Creating Landmarks')
+@section('title', 'KSB HOMES Design + Construct – Turning Dreams Into Reality')
+@section('meta_description', 'KSB homes – luxury design, development, and construction on Sydney North Shore. Building dream homes.')
 
 @section('content')
     {{-- Hero section: full-bleed video with overlaid text (reference: graya.com.au) --}}
@@ -23,7 +24,7 @@
     <section id="about" class="section section--about" aria-labelledby="about-heading">
         <div class="section__inner">
             <p class="section__label">About</p>
-            <h2 id="about-heading" class="section__title">KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects in the blue-chip suburbs of Brisbane, the Gold Coast and Byron Bay</h2>
+            <h2 id="about-heading" class="section__title">KSB homes is a high-end luxury design, development, and construction company specialising in luxury residential projects in the blue-chip suburbs in North Shore Sydney.</h2>
             <div class="section__content">
                 <p>Our goal is to create exceptional projects that set new benchmarks for luxury living. We are focused on taking the premium residential sector to new heights by delivering game-changing projects underpinned by visionary design and construction excellence.</p>
                 <a href="{{ url('/our-story') }}" class="btn btn--primary">Our Story</a>
@@ -42,7 +43,7 @@
                     <img src="{{ asset('assets/images/2.jpg') }}" alt="Exclusive project" class="two-col__img" width="500" height="900">
                 </div>
             </div>
-            <p class="two-col__badge">Ksb Exclusive Access</p>
+            <a href="{{ route('ksb-select.index') }}" class="two-col__badge two-col__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
         </div>
     </section>
 
@@ -50,7 +51,7 @@
     <section class="section section--feature-img" aria-label="Exclusive project">
         <div class="feature-img__wrap">
             <img src="{{ asset('assets/images/3.jpg') }}" alt="Exclusive residential project" class="feature-img__img" width="1200" height="800">
-            <p class="feature-img__badge">Ksb Exclusive Access</p>
+            <a href="{{ route('ksb-select.index') }}" class="feature-img__badge feature-img__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
         </div>
     </section>
 
@@ -59,22 +60,32 @@
         <div class="section__inner">
             <p class="section__label">Collection</p>
             <h2 id="collection-heading" class="section__title">Projects</h2>
-            <div class="projects-grid">
-                @foreach ([
-                    ['name' => 'SILK', 'slug' => 'silk', 'image' => 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop'],
-                    ['name' => 'THE GALLERY', 'slug' => 'the-gallery', 'image' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=500&fit=crop'],
-                    ['name' => 'ENCLAVE', 'slug' => 'enclave', 'image' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=500&fit=crop'],
-                    ['name' => 'HEIRLOOM', 'slug' => 'heirloom', 'image' => 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=500&fit=crop'],
-                    ['name' => 'THE PAVILION', 'slug' => 'the-pavilion', 'image' => 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=500&fit=crop'],
-                    ['name' => 'ARC', 'slug' => 'arc', 'image' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=500&fit=crop'],
-                    ['name' => 'JAMES PLACE', 'slug' => 'james-place', 'image' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=500&fit=crop'],
-                    ['name' => 'RIPPLE', 'slug' => 'ripple', 'image' => 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=500&fit=crop'],
-                ] as $project)
-                    <a href="{{ url('/projects/' . $project['slug']) }}" class="project-card">
-                        <img src="{{ $project['image'] }}" alt="{{ $project['name'] }}" class="project-card__img" width="400" height="500" loading="lazy">
-                        <span class="project-card__title">{{ $project['name'] }}</span>
+            @php
+                $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
+                $count = $featuredProjects->count();
+                $gridClass = 'projects-grid';
+                if ($count >= 1 && $count <= 2) {
+                    $gridClass .= ' projects-grid--pair';
+                } elseif ($count > 2) {
+                    $gridClass .= ' projects-grid--home-many';
+                }
+            @endphp
+            <div class="{{ $gridClass }}">
+                @forelse ($featuredProjects as $project)
+                    <a href="{{ route('projects.show', $project) }}" class="project-card">
+                        @if ($project->image)
+                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                        @else
+                            <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                        @endif
+                        <span class="project-card__title">{{ $project->name }}</span>
+                        @if ($project->is_exclusive_access)
+                            <span class="project-card__badge">KSB SELECT – CUSTOM PROJECTS</span>
+                        @endif
                     </a>
-                @endforeach
+                @empty
+                    <p class="collection-empty collection-empty--home" style="grid-column: 1 / -1;">No featured projects yet. Add projects in the admin and tick &ldquo;Show on home page&rdquo;.</p>
+                @endforelse
             </div>
             
             <div class="projects-grid__action">

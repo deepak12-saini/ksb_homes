@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title', 'Projects – KSB homes Design + Construct')
-@section('meta_description', 'Explore our portfolio of luxury residential developments in Brisbane, Gold Coast and Byron Bay.')
+@section('meta_description', 'Explore our portfolio of luxury residential projects.')
 
 @section('content')
     {{-- Hero: full-width image --}}
@@ -34,7 +34,7 @@
                         @endif
                         <span class="project-card__title">{{ $project->name }}</span>
                         @if ($project->is_exclusive_access)
-                            <span class="project-card__badge">Ksb Exclusive Access</span>
+                            <span class="project-card__badge">KSB SELECT – CUSTOM PROJECTS</span>
                         @endif
                     </a>
                 @empty

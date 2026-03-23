@@ -32,7 +32,10 @@
                 @endif
             </div>
             <div class="form-group">
-                <label><input type="checkbox" name="is_exclusive_access" value="1" {{ old('is_exclusive_access', $project->is_exclusive_access) ? 'checked' : '' }}> Exclusive Access (show badge)</label>
+                <label><input type="checkbox" name="featured_on_home" value="1" {{ old('featured_on_home', $project->featured_on_home) ? 'checked' : '' }}> Show on home page (featured in Projects section)</label>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" name="is_exclusive_access" value="1" {{ old('is_exclusive_access', $project->is_exclusive_access) ? 'checked' : '' }}> Show “KSB SELECT – CUSTOM PROJECTS” badge on card</label>
             </div>
             <div class="form-group">
                 <label for="sort_order">Sort order</label>

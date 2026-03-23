@@ -16,6 +16,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Category</th>
+                        <th>Home</th>
                         <th>Exclusive</th>
                         <th></th>
                     </tr>
@@ -25,6 +26,7 @@
                         <tr>
                             <td>{{ $project->name }}</td>
                             <td>{{ $project->category->name ?? '-' }}</td>
+                            <td>{{ $project->featured_on_home ? 'Yes' : 'No' }}</td>
                             <td>{{ $project->is_exclusive_access ? 'Yes' : 'No' }}</td>
                             <td>
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="admin-btn admin-btn--secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8125rem;">Edit</a>

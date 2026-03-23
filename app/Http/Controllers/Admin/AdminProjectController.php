@@ -32,11 +32,13 @@ class AdminProjectController extends Controller
             'project_category_id' => ['required', 'exists:project_categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],
             'is_exclusive_access' => ['boolean'],
+            'featured_on_home' => ['boolean'],
             'sort_order' => ['nullable', 'integer'],
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
         $validated['is_exclusive_access'] = $request->boolean('is_exclusive_access');
+        $validated['featured_on_home'] = $request->boolean('featured_on_home');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
 
         if ($request->hasFile('image')) {
@@ -62,11 +64,13 @@ class AdminProjectController extends Controller
             'project_category_id' => ['required', 'exists:project_categories,id'],
             'image' => ['nullable', 'image', 'max:2048'],
             'is_exclusive_access' => ['boolean'],
+            'featured_on_home' => ['boolean'],
             'sort_order' => ['nullable', 'integer'],
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
         $validated['is_exclusive_access'] = $request->boolean('is_exclusive_access');
+        $validated['featured_on_home'] = $request->boolean('featured_on_home');
         $validated['sort_order'] = $validated['sort_order'] ?? $project->sort_order;
 
         if ($request->hasFile('image')) {

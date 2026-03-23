@@ -3,13 +3,13 @@
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminProjectController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KsbSelectController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/our-story', function () {
     return view('our-story');
@@ -20,6 +20,11 @@ Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+
+Route::get('/ksb-select', [KsbSelectController::class, 'create'])->name('ksb-select.index');
+Route::post('/ksb-select', [KsbSelectController::class, 'storeStep1'])->name('ksb-select.step1');
+Route::get('/ksb-select/your-project', [KsbSelectController::class, 'step2'])->name('ksb-select.step2');
+Route::post('/ksb-select/your-project', [KsbSelectController::class, 'store'])->name('ksb-select.submit');
 
 Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 

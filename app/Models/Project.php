@@ -13,12 +13,19 @@ class Project extends Model
         'slug',
         'image',
         'is_exclusive_access',
+        'featured_on_home',
         'sort_order',
     ];
 
     protected $casts = [
         'is_exclusive_access' => 'boolean',
+        'featured_on_home' => 'boolean',
     ];
+
+    public function scopeFeaturedOnHome($query)
+    {
+        return $query->where('featured_on_home', true);
+    }
 
     public function category(): BelongsTo
     {

@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title', 'Our Story – KSB homes Design + Construct')
-@section('meta_description', 'Learn about KSB homes – award-winning design, development, and construction in Brisbane, Gold Coast and Byron Bay.')
+@section('meta_description', 'Learn about KSB homes – award-winning design, development, and construction.')
 
 @section('content')
     {{-- Hero: full-width image, "About" label, large heading --}}
@@ -40,14 +40,14 @@
                     <img src="{{ asset('assets/images/2.jpg') }}" alt="Exclusive project" class="two-col__img" width="500" height="900">
                 </div>
             </div>
-            <p class="two-col__badge">Ksb Exclusive Access</p>
+            <a href="{{ route('ksb-select.index') }}" class="two-col__badge two-col__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
         </div>
     </section>
 
     <section class="section section--feature-img" aria-label="Exclusive project">
         <div class="feature-img__wrap">
             <img src="{{ asset('assets/images/3.jpg') }}" alt="Exclusive residential project" class="feature-img__img" width="1200" height="800">
-            <p class="feature-img__badge">Ksb Exclusive Access</p>
+            <a href="{{ route('ksb-select.index') }}" class="feature-img__badge feature-img__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
         </div>
     </section>
 
@@ -57,7 +57,6 @@
             <h2 id="founders-heading" class="story-content__heading">Founders</h2>
             <div class="section__content">
                 <p>KSB Homes is a dedicated construction and home building company focused on delivering quality residential projects.</p>
-                <p>Our team is committed to excellence, innovation, and attention to detail in every project we undertake. We aim to create modern, comfortable homes while maintaining the highest standards of workmanship and reliability.</p>
             </div>
         </div>
     </section>
@@ -68,28 +67,21 @@
             <hr class="story-content__divider">
             <h2 id="services-heading" class="story-content__heading">Services</h2>
             <div class="section__content">
-                <p>Our in-house design, development and construction expertise enable us to ensure high-quality projects of superior design and innovative craftsmanship, from concept design to project delivery.</p>
+                <p>Architecture, development, and construction—delivered with a single vision from concept to completion.</p>
             </div>
 
             <div class="services-grid">
                 <div class="services-grid__row">
                     <div class="services-grid__label">Architecture</div>
-                    <div class="services-grid__text">
-                        Ksb homes has access to an experienced in-house design team comprising of some of Brisbane’s most promising architects. Should you commission Graya to undertake your project, our in-house team will work with you to design a home suited to your specific lifestyle requirements.
-                        Our integrated design and construction service allows you to have your project managed by us from start to finish, avoiding the usual hassles associated with engaging a separate architect and builder.
-                    </div>
+                    <div class="services-grid__text">Concept design, documentation, and coordination tailored to luxury residential outcomes.</div>
                 </div>
                 <div class="services-grid__row">
                     <div class="services-grid__label">Development</div>
-                    <div class="services-grid__text">
-                        Our full-service development offering encompasses both residential and multi-residential projects. Our development team aims to secure some of the best development sites in southeast Queensland for our clients and development projects. Our comprehensive development services include but are not limited to land acquisition, design, value management, statutory approvals and project management.
-                    </div>
+                    <div class="services-grid__text">Residential and multi-residential development—from site strategy through approvals and delivery.</div>
                 </div>
                 <div class="services-grid__row">
                     <div class="services-grid__label">Construction</div>
-                    <div class="services-grid__text">
-                        Our construction team manages projects from concept to completion, coordinating trades, quality control and on-site delivery. We focus on buildability, program and detail to ensure every home is delivered to a high standard, on time and with minimal disruption.
-                    </div>
+                    <div class="services-grid__text">On-site delivery, quality control, and program management to complete your project to a high standard.</div>
                 </div>
             </div>
         </div>
