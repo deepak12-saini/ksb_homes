@@ -58,6 +58,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Coming Soon (full-site hold page)
+    |--------------------------------------------------------------------------
+    |
+    | When true, all web routes show only the coming-soon page. This is separate
+    | from maintenance mode (php artisan down). Set COMING_SOON=true in .env.
+    |
+    */
+
+    'coming_soon' => (bool) env('COMING_SOON', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
