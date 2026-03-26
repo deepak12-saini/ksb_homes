@@ -1108,6 +1108,69 @@ a.feature-img__badge--link:hover {
     background-color: rgba(26, 26, 26, 0.92);
 }
 
+/* /projects listing: name on image + same name below (no KSB badge) */
+.project-card.project-card--listing {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    aspect-ratio: auto;
+    align-items: stretch;
+}
+
+.project-card.project-card--listing::before {
+    display: none;
+}
+
+.project-card__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+}
+
+.project-card__media::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 42%;
+    min-height: 5rem;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.22) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.project-card--listing .project-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-card__caption {
+    display: block;
+    margin: var(--space-md) 0 0;
+    padding: 0 var(--space-xs);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #1a1a1a;
+    line-height: 1.3;
+}
+
+.project-card--listing:hover .project-card__caption {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
 @media (max-width: 992px) {
     .projects-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1120,9 +1183,10 @@ a.feature-img__badge--link:hover {
     }
 }
 
-/* Home: two featured projects — one row, two equal columns (not 4-col layout) */
+/* Home + /projects: exactly two items — one full row, 50% / 50% (not 4-col layout) */
 .projects-grid.projects-grid--pair {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
 }
 
 @media (max-width: 420px) {
@@ -1143,6 +1207,111 @@ a.feature-img__badge--link:hover {
     font-size: 0.9375rem;
     max-width: 40rem;
     margin-inline: auto;
+}
+
+/* Home: first two featured projects — image + name below (dynamic from DB) */
+.section--home-spotlight .section__inner--relative {
+    max-width: var(--container-max);
+}
+
+.home-spotlight__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    max-width: var(--container-max);
+    margin: 0 auto;
+    align-items: start;
+}
+
+.home-spotlight__grid--single {
+    grid-template-columns: 1fr;
+    max-width: 42rem;
+}
+
+.home-spotlight__card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.home-spotlight__card:hover .home-spotlight__name {
+    color: var(--color-accent);
+}
+
+.home-spotlight__img-wrap {
+    overflow: hidden;
+    line-height: 0;
+}
+
+.home-spotlight__img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    min-height: 400px;
+    max-height: 85vh;
+}
+
+.home-spotlight__name {
+    margin: var(--space-md) 0 0;
+    padding: 0 var(--space-xs);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+    color: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+    .home-spotlight__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-spotlight__grid--single {
+        max-width: none;
+    }
+}
+
+/* Home collection: titles + optional badge below image (not overlaid) */
+.project-card.project-card--stacked {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    aspect-ratio: auto;
+    align-items: stretch;
+}
+
+.project-card.project-card--stacked::before {
+    display: none;
+}
+
+.project-card.project-card--stacked .project-card__img {
+    aspect-ratio: 4 / 5;
+    height: auto;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.project-card.project-card--stacked .project-card__title {
+    position: static;
+    margin: var(--space-md) 0 0;
+    padding: 0 var(--space-sm);
+    background: none;
+    box-shadow: none;
+    color: #1a1a1a;
+    text-align: center;
+    max-width: none;
+    align-self: center;
+    text-shadow: none;
+}
+
+.project-card.project-card--stacked:hover .project-card__title {
+    background: none;
+    color: var(--color-accent);
 }
 
 /* -------------------------------------------------------------------------

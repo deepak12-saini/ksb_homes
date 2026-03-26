@@ -23,7 +23,7 @@
         <nav class="nav-overlay__nav" aria-label="Main navigation">
             <ul class="nav-overlay__list">
                 <li><a href="{{ url('/') }}">Home</a></li>
-                <li><a href="{{ url('/our-story') }}">Our Story</a></li>
+                <li><a href="{{ route('our-story') }}">Our Story</a></li>
                 <li><a href="{{ url('/projects') }}">Projects</a></li>
                 <!-- <li><a href="{{ url('/developments') }}">Developments</a></li> -->
                 <!-- <li><a href="{{ url('/ksb-circle') }}">KSB Circle</a></li> -->

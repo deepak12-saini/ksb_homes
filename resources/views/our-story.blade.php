@@ -4,6 +4,10 @@
 @section('meta_description', 'Learn about KSB homes – award-winning design, development, and construction.')
 
 @section('content')
+    @php
+        $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
+    @endphp
+
     {{-- Hero: full-width image, "About" label, large heading --}}
     <section class="story-hero" aria-label="Our Story">
         <div class="story-hero__bg">
@@ -23,33 +27,34 @@
             <hr class="story-content__divider">
             <h2 id="vision-heading" class="story-content__heading">Vision</h2>
             <div class="section__content">
-                <p>KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects in the blue-chip suburbs of Brisbane, the Gold Coast and Byron Bay.</p>
-                <p>Our goal is to create exceptional projects that set new benchmarks for luxury living. We are focused on taking the premium residential sector to new heights by delivering game-changing projects underpinned by visionary design and construction excellence.</p>
+                <p>KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects.</p>
+                <p>Our goal is to create exceptional projects that set new benchmarks for luxury living.</p>
             </div>
         </div>
     </section>
 
 
-    <section class="section section--two-col" aria-label="Our Story visuals">
-        <div class="section__inner section__inner--relative">
-            <div class="two-col__grid">
-                <div class="two-col__left">
-                    <img src="{{ asset('assets/images/ceo.png') }}" alt="Our team" class="two-col__img" width="700" height="900">
-                </div>
-                <div class="two-col__right">
-                    <img src="{{ asset('assets/images/2.jpg') }}" alt="Exclusive project" class="two-col__img" width="500" height="900">
+    {{-- Same as home: first two “Show on home” projects, names below images (no badges) --}}
+    @if ($spotlightProjects->isNotEmpty())
+        <section class="section section--two-col section--home-spotlight" aria-label="Featured projects">
+            <div class="section__inner section__inner--relative">
+                <div class="home-spotlight__grid {{ $spotlightProjects->count() === 1 ? 'home-spotlight__grid--single' : '' }}">
+                    @foreach ($spotlightProjects as $project)
+                        <a href="{{ route('projects.show', $project) }}" class="home-spotlight__card">
+                            <div class="home-spotlight__img-wrap">
+                                @if ($project->image)
+                                    <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
+                                @else
+                                    <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
+                                @endif
+                            </div>
+                            <p class="home-spotlight__name">{{ $project->name }}</p>
+                        </a>
+                    @endforeach
                 </div>
             </div>
-            <a href="{{ route('ksb-select.index') }}" class="two-col__badge two-col__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
-        </div>
-    </section>
-
-    <section class="section section--feature-img" aria-label="Exclusive project">
-        <div class="feature-img__wrap">
-            <img src="{{ asset('assets/images/3.jpg') }}" alt="Exclusive residential project" class="feature-img__img" width="1200" height="800">
-            <a href="{{ route('ksb-select.index') }}" class="feature-img__badge feature-img__badge--link">KSB SELECT – CUSTOM PROJECTS</a>
-        </div>
-    </section>
+        </section>
+    @endif
 
     <section class="section section--about story-content" aria-labelledby="founders-heading">
         <div class="section__inner">

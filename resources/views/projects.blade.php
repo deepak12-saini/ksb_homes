@@ -24,18 +24,24 @@
                     @endforeach
                 </div>
             </div>
-            <div class="projects-grid">
+            @php
+                $projectsGridClass = 'projects-grid';
+                if ($projects->count() === 2) {
+                    $projectsGridClass .= ' projects-grid--pair';
+                }
+            @endphp
+            <div class="{{ $projectsGridClass }}">
                 @forelse ($projects as $project)
-                    <a href="{{ route('projects.show', $project) }}" class="project-card">
-                        @if ($project->image)
-                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
-                        @endif
-                        <span class="project-card__title">{{ $project->name }}</span>
-                        @if ($project->is_exclusive_access)
-                            <span class="project-card__badge">KSB SELECT – CUSTOM PROJECTS</span>
-                        @endif
+                    <a href="{{ route('projects.show', $project) }}" class="project-card project-card--listing">
+                        <div class="project-card__media">
+                            @if ($project->image)
+                                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                            @endif
+                            <span class="project-card__title">{{ $project->name }}</span>
+                        </div>
+                        <span class="project-card__caption" aria-hidden="true">{{ $project->name }}</span>
                     </a>
                 @empty
                     <p class="collection-empty" style="grid-column: 1 / -1;">No projects in this collection yet.</p>
