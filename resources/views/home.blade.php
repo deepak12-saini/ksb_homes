@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title', 'KSB HOMES Design + Construct – Turning Dreams Into Reality')
-@section('meta_description', 'KSB homes – luxury design, development, and construction on Sydney North Shore. Building dream homes.')
+@section('meta_description', "KSB Luxury Homes – high-end design, development and construction for luxury residential projects on Sydney's North Shore.")
 
 @section('content')
     @php
@@ -25,16 +25,19 @@
                 <span class="hero__line">BUILDING</span>
                 <span class="hero__line hero__line--2">DREAM HOMES</span>
             </h1>
+            <p class="hero__tagline">KSB Luxury Homes — Barker and Knox alumni building luxury homes on the North Shore.</p>
         </div>
     </section>
 
     {{-- About section --}}
     <section id="about" class="section section--about" aria-labelledby="about-heading">
         <div class="section__inner">
-            <p class="section__label">About</p>
-            <h2 id="about-heading" class="section__title">KSB homes is a high-end luxury design, development, and construction company specialising in luxury residential projects in the blue-chip suburbs in North Shore Sydney.</h2>
+            <p class="section__label">For KSB</p>
+            <h2 id="about-heading" class="section__title">About KSB Luxury Homes</h2>
             <div class="section__content">
-                <p>Our goal is to create exceptional projects that set new benchmarks for luxury living. We are focused on taking the premium residential sector to new heights by delivering game-changing projects underpinned by visionary design and construction excellence.</p>
+                <p>KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects across the blue chip suburbs of Sydney's North Shore.</p>
+                <p>Founded and led by alumni of Barker College and Knox Grammar, two of the North Shore's most prestigious institutions, we're not just building in this area—we grew up here. We know these streets, these neighbourhoods, and the families who call them home. That local connection runs through everything we do.</p>
+                <p>Our goal is to create exceptional homes that set new benchmarks for luxury living. We take the premium residential sector to new heights by delivering projects underpinned by visionary design, superior craftsmanship, and an unwavering commitment to excellence.</p>
                 <a href="{{ route('our-story') }}" class="btn btn--primary">Our Story</a>
             </div>
         </div>
@@ -68,7 +71,12 @@
             <p class="section__label">Collection</p>
             <h2 id="collection-heading" class="section__title">Projects</h2>
             @php
-                $count = $collectionRest->count();
+                /**
+                 * 3+ featured: first 2 are in spotlight above; grid shows from project #3.
+                 * 1–2 featured: spotlight shows them; grid would be empty unless we repeat the same projects here—so we list all featured in the grid to avoid a blank “Projects” block.
+                 */
+                $collectionGridProjects = $featuredProjects->count() > 2 ? $collectionRest : $featuredProjects;
+                $count = $collectionGridProjects->count();
                 $gridClass = 'projects-grid';
                 if ($count >= 1 && $count <= 2) {
                     $gridClass .= ' projects-grid--pair';
@@ -76,9 +84,9 @@
                     $gridClass .= ' projects-grid--home-many';
                 }
             @endphp
-            @if ($collectionRest->isNotEmpty())
+            @if ($featuredProjects->isNotEmpty())
                 <div class="{{ $gridClass }}">
-                    @foreach ($collectionRest as $project)
+                    @foreach ($collectionGridProjects as $project)
                         <a href="{{ route('projects.show', $project) }}" class="project-card project-card--stacked">
                             @if ($project->image)
                                 <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
@@ -89,7 +97,7 @@
                         </a>
                     @endforeach
                 </div>
-            @elseif ($featuredProjects->isEmpty())
+            @else
                 <p class="collection-empty collection-empty--home" style="grid-column: 1 / -1;">No featured projects yet. Add projects in the admin and tick &ldquo;Show on home page&rdquo;.</p>
             @endif
 
