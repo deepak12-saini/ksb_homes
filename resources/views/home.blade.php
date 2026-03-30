@@ -38,6 +38,7 @@
                 <p>KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects across the blue chip suburbs of Sydney's North Shore.</p>
                 <p>Founded and led by alumni of Barker College and Knox Grammar, two of the North Shore's most prestigious institutions, we're not just building in this area—we grew up here. We know these streets, these neighbourhoods, and the families who call them home. That local connection runs through everything we do.</p>
                 <p>Our goal is to create exceptional homes that set new benchmarks for luxury living. We take the premium residential sector to new heights by delivering projects underpinned by visionary design, superior craftsmanship, and an unwavering commitment to excellence.</p>
+                <p>For us, building on the North Shore isn’t just business it’s personal.</p>
                 <a href="{{ route('our-story') }}" class="btn btn--primary">Our Story</a>
             </div>
         </div>
