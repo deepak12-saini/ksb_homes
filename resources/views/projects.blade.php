@@ -35,7 +35,7 @@
                     <a href="{{ route('projects.show', $project) }}" class="project-card project-card--listing">
                         <div class="project-card__media">
                             @if ($project->image)
-                                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                                <img src="{{ $project->public_image_url }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                             @else
                                 <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                             @endif

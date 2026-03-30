@@ -28,7 +28,7 @@
                 <label for="image">Image</label>
                 <input type="file" name="image" id="image" accept="image/*">
                 @if ($project->image)
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">Current: <img src="{{ asset('storage/' . $project->image) }}" alt="" style="max-height: 60px; vertical-align: middle;"></p>
+                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">Current: <img src="{{ $project->public_image_url }}" alt="" style="max-height: 60px; vertical-align: middle;"></p>
                 @endif
             </div>
             <div class="form-group">

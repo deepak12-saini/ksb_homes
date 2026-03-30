@@ -8,7 +8,12 @@ use App\Http\Controllers\KsbSelectController;
 use App\Http\Controllers\OurStoryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PublicProjectImageController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/media/projects/{filename}', [PublicProjectImageController::class, 'show'])
+    ->where('filename', '[a-zA-Z0-9._-]+')
+    ->name('media.project_image');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

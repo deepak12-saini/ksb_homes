@@ -52,7 +52,7 @@
                         <a href="{{ route('projects.show', $project) }}" class="home-spotlight__card">
                             <div class="home-spotlight__img-wrap">
                                 @if ($project->image)
-                                    <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
+                                    <img src="{{ $project->public_image_url }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
                                 @else
                                     <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
                                 @endif
@@ -89,7 +89,7 @@
                     @foreach ($collectionGridProjects as $project)
                         <a href="{{ route('projects.show', $project) }}" class="project-card project-card--stacked">
                             @if ($project->image)
-                                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                                <img src="{{ $project->public_image_url }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                             @else
                                 <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                             @endif
