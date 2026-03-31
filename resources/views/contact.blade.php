@@ -72,6 +72,12 @@
                     </p>
                 @endif
 
+                @if (session('contact_error'))
+                    <p class="contact-form__message contact-form__message--error" role="alert">
+                        {{ session('contact_error') }}
+                    </p>
+                @endif
+
                 <form method="post" action="{{ route('contact.submit') }}" class="contact-form__form" novalidate>
                     @csrf
 

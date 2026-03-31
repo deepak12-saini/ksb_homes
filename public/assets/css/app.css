@@ -751,6 +751,10 @@ ul {
     color: #16a34a;
 }
 
+.contact-form__message--error {
+    color: #dc2626;
+}
+
 @media (max-width: 768px) {
     .contact-grid {
         grid-template-columns: 1fr;
