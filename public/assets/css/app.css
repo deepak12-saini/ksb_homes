@@ -420,10 +420,20 @@ ul {
     padding-bottom: var(--space-2xl);
 }
 
+/* Our Story sections use .section + .story-content together; reduce stacked vertical spacing. */
+.story-content.section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+}
+
 .story-content__divider {
     border: none;
     border-top: 1px solid rgba(0, 0, 0, 0.12);
     margin: 0 0 var(--space-xl);
+}
+
+.story-content.section + .story-content.section {
+    margin-top: 0;
 }
 
 .story-content__heading {
@@ -476,6 +486,11 @@ ul {
 @media (max-width: 768px) {
     .services-grid__row {
         grid-template-columns: 1fr;
+    }
+
+    .story-content.section {
+        padding-top: var(--space-lg);
+        padding-bottom: var(--space-lg);
     }
 }
 
