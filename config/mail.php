@@ -127,4 +127,19 @@ return [
 
     'contact_to' => env('MAIL_TO_ADDRESS', env('MAIL_FROM_ADDRESS')),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Lead email PDF (optional)
+    |--------------------------------------------------------------------------
+    |
+    | If MAIL_LEAD_PDF is set and the file exists, it is attached to every
+    | website lead email (e.g. brochure for the inbox recipient).
+    | Path: absolute, or relative to storage/app (e.g. lead-email/guide.pdf),
+    | or relative to public/ (e.g. downloads/guide.pdf).
+    |
+    */
+
+    'lead_pdf_path' => env('MAIL_LEAD_PDF'),
+    'lead_pdf_name' => env('MAIL_LEAD_PDF_NAME', 'KSB Homes - information.pdf'),
+
 ];
