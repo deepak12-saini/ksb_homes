@@ -615,6 +615,77 @@ ul {
     }
 }
 
+/* Our Story — Founders: two columns (story + leadership / team image) */
+.story-content--founders .story-founders__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(var(--space-xl), 4vw, var(--space-2xl));
+    align-items: center;
+}
+
+.story-content--founders .story-founders__copy {
+    min-width: 0;
+}
+
+.story-content--founders .story-founders__copy .story-content__heading {
+    margin-bottom: var(--space-lg);
+}
+
+.story-content--founders .story-founders__copy .section__content {
+    max-width: none;
+}
+
+.story-content--founders .story-founders__figure {
+    margin: 0;
+    min-width: 0;
+}
+
+.story-content--founders .story-founders__media {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.65) inset,
+        0 24px 48px -20px rgba(0, 0, 0, 0.18),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+    transition:
+        box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-content--founders .story-founders__figure:hover .story-founders__media {
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.5) inset,
+        0 32px 64px -24px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(201, 169, 98, 0.25);
+    transform: translateY(-2px);
+}
+
+.story-content--founders .story-founders__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-content--founders .story-founders__figure:hover .story-founders__img {
+    transform: scale(1.045);
+}
+
+@media (max-width: 56rem) {
+    .story-content--founders .story-founders__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .story-content--founders .story-founders__figure {
+        max-width: min(100%, 28rem);
+        margin-inline: auto;
+    }
+}
+
 /* Services grid on Our Story (left labels, right text) */
 .services-grid {
     margin-top: var(--space-xl);
@@ -699,6 +770,8 @@ ul {
 
     .story-content--vision .story-vision__figure:hover .story-vision__media,
     .story-content--vision .story-vision__figure:hover .story-vision__img,
+    .story-content--founders .story-founders__figure:hover .story-founders__media,
+    .story-content--founders .story-founders__figure:hover .story-founders__img,
     .home-spotlight__card:hover .home-spotlight__img,
     .section--about-home .about-home__figure:hover .about-home__media,
     .section--about-home .about-home__figure:hover .about-home__img,

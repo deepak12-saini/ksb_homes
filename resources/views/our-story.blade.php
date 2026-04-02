@@ -9,6 +9,9 @@
         $visionImage = is_file(public_path('assets/images/our-story-vision.jpg'))
             ? asset('assets/images/our-story-vision.jpg')
             : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=560&fit=crop&q=80';
+        $foundersImage = is_file(public_path('assets/images/our-story-founders.jpg'))
+            ? asset('assets/images/our-story-founders.jpg')
+            : 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&h=560&fit=crop&q=80';
     @endphp
 
     {{-- Hero: full-width image, "About" label, large heading --}}
@@ -68,12 +71,22 @@
         </section>
     @endif
 
-    <section class="section section--about story-content" aria-labelledby="founders-heading">
+    {{-- Founders: copy + portrait or leadership image (replace demo: public/assets/images/our-story-founders.jpg) --}}
+    <section class="section section--about story-content story-content--founders" aria-labelledby="founders-heading">
         <div class="section__inner">
             <hr class="story-content__divider">
-            <h2 id="founders-heading" class="story-content__heading">Founders</h2>
-            <div class="section__content">
-                <p>KSB Homes is a dedicated construction and home building company focused on delivering quality residential projects.</p>
+            <div class="story-founders__grid">
+                <div class="story-founders__copy">
+                    <h2 id="founders-heading" class="story-content__heading">Founders</h2>
+                    <div class="section__content">
+                        <p>KSB Homes is a dedicated construction and home building company focused on delivering quality residential projects.</p>
+                    </div>
+                </div>
+                <figure class="story-founders__figure">
+                    <div class="story-founders__media">
+                        <img src="{{ $foundersImage }}" alt="KSB Homes founders leading design and construction direction" class="story-founders__img" width="900" height="560" loading="lazy">
+                    </div>
+                </figure>
             </div>
         </div>
     </section>
