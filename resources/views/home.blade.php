@@ -6,6 +6,9 @@
 @section('content')
     @php
         $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
+        $aboutTeamImage = is_file(public_path('assets/images/about-team.jpg'))
+            ? asset('assets/images/about-team.jpg')
+            : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80';
         /** First two “Show on home” projects: large side-by-side images, names below (no badges). */
         $spotlight = $featuredProjects->take(2);
         /** Remaining featured projects in the Collection grid (names below images). */
@@ -13,7 +16,7 @@
     @endphp
 
     {{-- Hero section: full-bleed video with overlaid text (reference: graya.com.au) --}}
-    <section class="hero" aria-label="Hero">
+    <section class="hero hero--motion" aria-label="Hero">
         <div class="hero__media">
             <video class="hero__video" autoplay muted loop playsinline poster="{{ asset('assets/images/hero-poster.jpg') }}">
                 <source src="{{ asset('assets/videos/hero.mp4') }}" type="video/mp4">
@@ -29,18 +32,25 @@
         </div>
     </section>
 
-    {{-- About section --}}
-    <section id="about" class="section section--about" aria-labelledby="about-heading">
-        <div class="section__inner">
-            <p class="section__label">For KSB</p>
-            <h2 id="about-heading" class="section__title">About KSB Luxury Homes</h2>
-            <div class="section__content">
-                <p>KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects across the blue chip suburbs of Sydney's North Shore.</p>
-                <p>Founded and led by alumni of Barker College and Knox Grammar, two of the North Shore's most prestigious institutions, we're not just building in this area—we grew up here. We know these streets, these neighbourhoods, and the families who call them home. That local connection runs through everything we do.</p>
-                <p>Our goal is to create exceptional homes that set new benchmarks for luxury living. We take the premium residential sector to new heights by delivering projects underpinned by visionary design, superior craftsmanship, and an unwavering commitment to excellence.</p>
-                <p>For us, building on the North Shore isn’t just business it’s personal.</p>
-                <a href="{{ route('our-story') }}" class="btn btn--primary">Our Story</a>
+    {{-- About section: copy + team image (replace demo: add public/assets/images/about-team.jpg) --}}
+    <section id="about" class="section section--about section--about-home" aria-labelledby="about-heading">
+        <div class="section__inner section__inner--about-home">
+            <div class="about-home__copy">
+                <p class="section__label">For KSB</p>
+                <h2 id="about-heading" class="section__title">About KSB Luxury Homes</h2>
+                <div class="section__content">
+                    <p>KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects across the blue chip suburbs of Sydney's North Shore.</p>
+                    <p>Founded and led by alumni of Barker College and Knox Grammar, two of the North Shore's most prestigious institutions, we're not just building in this area—we grew up here. We know these streets, these neighbourhoods, and the families who call them home. That local connection runs through everything we do.</p>
+                    <p>Our goal is to create exceptional homes that set new benchmarks for luxury living. We take the premium residential sector to new heights by delivering projects underpinned by visionary design, superior craftsmanship, and an unwavering commitment to excellence.</p>
+                    <p>For us, building on the North Shore isn’t just business it’s personal.</p>
+                    <a href="{{ route('our-story') }}" class="btn btn--primary">Our Story</a>
+                </div>
             </div>
+            <figure class="about-home__figure">
+                <div class="about-home__media">
+                    <img src="{{ $aboutTeamImage }}" alt="KSB team on site with a luxury home build" class="about-home__img" width="900" height="560" loading="lazy">
+                </div>
+            </figure>
         </div>
     </section>
 
@@ -89,11 +99,13 @@
                 <div class="{{ $gridClass }}">
                     @foreach ($collectionGridProjects as $project)
                         <a href="{{ route('projects.show', $project) }}" class="project-card project-card--stacked">
-                            @if ($project->image)
-                                <img src="{{ $project->public_image_url }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
-                            @else
-                                <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
-                            @endif
+                            <div class="project-card__media">
+                                @if ($project->image)
+                                    <img src="{{ $project->public_image_url }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                                @else
+                                    <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
+                                @endif
+                            </div>
                             <span class="project-card__title">{{ $project->name }}</span>
                         </a>
                     @endforeach

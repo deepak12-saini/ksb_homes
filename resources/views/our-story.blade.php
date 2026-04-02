@@ -6,10 +6,13 @@
 @section('content')
     @php
         $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
+        $visionImage = is_file(public_path('assets/images/our-story-vision.jpg'))
+            ? asset('assets/images/our-story-vision.jpg')
+            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=560&fit=crop&q=80';
     @endphp
 
     {{-- Hero: full-width image, "About" label, large heading --}}
-    <section class="story-hero" aria-label="Our Story">
+    <section class="story-hero story-hero--motion" aria-label="Our Story">
         <div class="story-hero__bg">
             {{-- Replace with asset('assets/images/our-story-hero.jpg') for your own image --}}
             <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=900&fit=crop" alt="" class="story-hero__img">
@@ -21,14 +24,23 @@
         </div>
     </section>
 
-    {{-- Content: divider, Vision heading, paragraphs --}}
-    <section class="section section--about story-content" aria-labelledby="vision-heading">
+    {{-- Vision: copy + image (replace demo: add public/assets/images/our-story-vision.jpg) --}}
+    <section class="section section--about story-content story-content--vision" aria-labelledby="vision-heading">
         <div class="section__inner">
             <hr class="story-content__divider">
-            <h2 id="vision-heading" class="story-content__heading">Vision</h2>
-            <div class="section__content">
-                <p>KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects.</p>
-                <p>Our goal is to create exceptional projects that set new benchmarks for luxury living.</p>
+            <div class="story-vision__grid">
+                <div class="story-vision__copy">
+                    <h2 id="vision-heading" class="story-content__heading">Vision</h2>
+                    <div class="section__content">
+                        <p>KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects.</p>
+                        <p>Our goal is to create exceptional projects that set new benchmarks for luxury living.</p>
+                    </div>
+                </div>
+                <figure class="story-vision__figure">
+                    <div class="story-vision__media">
+                        <img src="{{ $visionImage }}" alt="Luxury residential architecture reflecting award-winning design and benchmarks for luxury living" class="story-vision__img" width="900" height="560" loading="lazy">
+                    </div>
+                </figure>
             </div>
         </div>
     </section>
