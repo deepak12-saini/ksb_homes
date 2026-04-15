@@ -1,6 +1,11 @@
 @extends('layout')
 
 @section('title', $project->name . ' – KSB homes')
+@section('meta_description', 'Discover ' . $project->name . ' by KSB homes, a luxury residential project on Sydney\'s North Shore.')
+@section('canonical', route('projects.show', $project))
+@if ($project->public_image_url)
+    @section('og_image', $project->public_image_url)
+@endif
 
 @section('content')
     <section class="section section--page section--about" aria-labelledby="project-heading">

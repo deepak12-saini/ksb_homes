@@ -9,11 +9,48 @@ use App\Http\Controllers\OurStoryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PublicProjectImageController;
+use App\Models\Project;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/media/projects/{filename}', [PublicProjectImageController::class, 'show'])
     ->where('filename', '[a-zA-Z0-9._-]+')
     ->name('media.project_image');
+
+Route::get('/sitemap.xml', function () {
+    $staticPages = [
+        ['loc' => route('home'), 'lastmod' => now()],
+        ['loc' => route('our-story'), 'lastmod' => now()],
+        ['loc' => route('projects.index'), 'lastmod' => now()],
+        ['loc' => route('contact.index'), 'lastmod' => now()],
+        ['loc' => route('ksb-select.index'), 'lastmod' => now()],
+    ];
+
+    $projectPages = Project::query()
+        ->select(['slug', 'updated_at', 'created_at'])
+        ->orderByDesc('updated_at')
+        ->get()
+        ->map(function (Project $project): array {
+            return [
+                'loc' => route('projects.show', $project),
+                'lastmod' => $project->updated_at ?? $project->created_at ?? now(),
+            ];
+        });
+
+    $urls = collect($staticPages)->merge($projectPages);
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    foreach ($urls as $url) {
+        $loc = htmlspecialchars($url['loc'], ENT_XML1);
+        $lastmod = ($url['lastmod'] ?? now())->toAtomString();
+        $xml .= '<url><loc>'.$loc.'</loc><lastmod>'.$lastmod.'</lastmod></url>';
+    }
+
+    $xml .= '</urlset>';
+
+    return response($xml, 200, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
