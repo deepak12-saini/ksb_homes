@@ -1,29 +1,39 @@
 @extends('layout')
 
-@section('title', 'Our Story – KSB homes Design + Construct')
-@section('meta_description', 'Learn about KSB homes – award-winning design, development, and construction.')
+@section('title', $storyContent['seo_title'])
+@section('meta_description', $storyContent['seo_description'])
 
 @section('content')
     @php
         $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
-        $visionImage = is_file(public_path('assets/images/our-story-vision.jpg'))
-            ? asset('assets/images/our-story-vision.jpg')
-            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=560&fit=crop&q=80';
-        $foundersImage = is_file(public_path('assets/images/our-story-founders.jpg'))
-            ? asset('assets/images/our-story-founders.jpg')
-            : 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&h=560&fit=crop&q=80';
+        $defaultHeroImg = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=900&fit=crop';
+        $heroImage = !empty($storyContent['hero_image'])
+            ? asset('storage/'.$storyContent['hero_image'])
+            : $defaultHeroImg;
+        $defaultVision = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=560&fit=crop&q=80';
+        $visionImage = !empty($storyContent['vision_image'])
+            ? asset('storage/'.$storyContent['vision_image'])
+            : (is_file(public_path('assets/images/our-story-vision.jpg'))
+                ? asset('assets/images/our-story-vision.jpg')
+                : $defaultVision);
+        $defaultFounders = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&h=560&fit=crop&q=80';
+        $foundersImage = !empty($storyContent['founders_image'])
+            ? asset('storage/'.$storyContent['founders_image'])
+            : (is_file(public_path('assets/images/our-story-founders.jpg'))
+                ? asset('assets/images/our-story-founders.jpg')
+                : $defaultFounders);
     @endphp
 
     {{-- Hero: full-width image, "About" label, large heading --}}
     <section class="story-hero story-hero--motion" aria-label="Our Story">
         <div class="story-hero__bg">
             {{-- Replace with asset('assets/images/our-story-hero.jpg') for your own image --}}
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=900&fit=crop" alt="" class="story-hero__img">
+            <img src="{{ $heroImage }}" alt="" class="story-hero__img">
             <div class="story-hero__overlay" aria-hidden="true"></div>
         </div>
         <div class="story-hero__content">
-            <p class="story-hero__label">About</p>
-            <h1 class="story-hero__title">Visionary design and construction excellence</h1>
+            <p class="story-hero__label">{{ $storyContent['hero_label'] }}</p>
+            <h1 class="story-hero__title">{{ $storyContent['hero_title'] }}</h1>
         </div>
     </section>
 
@@ -33,10 +43,10 @@
             <hr class="story-content__divider">
             <div class="story-vision__grid">
                 <div class="story-vision__copy">
-                    <h2 id="vision-heading" class="story-content__heading">Vision</h2>
+                    <h2 id="vision-heading" class="story-content__heading">{{ $storyContent['vision_heading'] }}</h2>
                     <div class="section__content">
-                        <p>KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects.</p>
-                        <p>Our goal is to create exceptional projects that set new benchmarks for luxury living.</p>
+                        <p>{{ $storyContent['vision_paragraph_1'] }}</p>
+                        <p>{{ $storyContent['vision_paragraph_2'] }}</p>
                     </div>
                 </div>
                 <figure class="story-vision__figure">
@@ -77,9 +87,9 @@
             <hr class="story-content__divider">
             <div class="story-founders__grid">
                 <div class="story-founders__copy">
-                    <h2 id="founders-heading" class="story-content__heading">Founders</h2>
+                    <h2 id="founders-heading" class="story-content__heading">{{ $storyContent['founders_heading'] }}</h2>
                     <div class="section__content">
-                        <p>KSB Homes is a dedicated construction and home building company focused on delivering quality residential projects.</p>
+                        <p>{{ $storyContent['founders_paragraph_1'] }}</p>
                     </div>
                 </div>
                 <figure class="story-founders__figure">
@@ -95,23 +105,23 @@
     <section class="section section--about story-content" aria-labelledby="services-heading">
         <div class="section__inner">
             <hr class="story-content__divider">
-            <h2 id="services-heading" class="story-content__heading">Services</h2>
+            <h2 id="services-heading" class="story-content__heading">{{ $storyContent['services_heading'] }}</h2>
             <div class="section__content">
-                <p>Architecture, development, and construction—delivered with a single vision from concept to completion.</p>
+                <p>{{ $storyContent['services_intro'] }}</p>
             </div>
 
             <div class="services-grid">
                 <div class="services-grid__row">
-                    <div class="services-grid__label">Architecture</div>
-                    <div class="services-grid__text">Concept design, documentation, and coordination tailored to luxury residential outcomes.</div>
+                    <div class="services-grid__label">{{ $storyContent['services_architecture_label'] }}</div>
+                    <div class="services-grid__text">{{ $storyContent['services_architecture_text'] }}</div>
                 </div>
                 <div class="services-grid__row">
-                    <div class="services-grid__label">Development</div>
-                    <div class="services-grid__text">Residential and multi-residential development—from site strategy through approvals and delivery.</div>
+                    <div class="services-grid__label">{{ $storyContent['services_development_label'] }}</div>
+                    <div class="services-grid__text">{{ $storyContent['services_development_text'] }}</div>
                 </div>
                 <div class="services-grid__row">
-                    <div class="services-grid__label">Construction</div>
-                    <div class="services-grid__text">On-site delivery, quality control, and program management to complete your project to a high standard.</div>
+                    <div class="services-grid__label">{{ $storyContent['services_construction_label'] }}</div>
+                    <div class="services-grid__text">{{ $storyContent['services_construction_text'] }}</div>
                 </div>
             </div>
         </div>

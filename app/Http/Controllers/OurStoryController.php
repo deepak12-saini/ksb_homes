@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PageContent;
 use App\Models\Project;
 use Illuminate\View\View;
 
@@ -18,6 +19,7 @@ class OurStoryController extends Controller
 
         return view('our-story', [
             'spotlightProjects' => $spotlight,
+            'storyContent' => PageContent::getPageValues('our_story', PageContent::ourStoryDefaults()),
         ]);
     }
 }

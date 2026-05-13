@@ -6,9 +6,11 @@
 @section('content')
     @php
         $placeholder = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop';
-        $aboutTeamImage = is_file(public_path('assets/images/about-team.jpg'))
-            ? asset('assets/images/about-team.jpg')
-            : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80';
+        $aboutTeamImage = !empty($homeContent['about_image'])
+            ? asset('storage/'.$homeContent['about_image'])
+            : (is_file(public_path('assets/images/about-team.jpg'))
+                ? asset('assets/images/about-team.jpg')
+                : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80');
         /** First two “Show on home” projects: large side-by-side images, names below (no badges). */
         $spotlight = $featuredProjects->take(2);
         /** Remaining featured projects in the Collection grid (names below images). */
@@ -25,10 +27,10 @@
         </div>
         <div class="hero__content">
             <h1 class="hero__title">
-                <span class="hero__line">BUILDING</span>
-                <span class="hero__line hero__line--2">DREAM HOMES</span>
+                <span class="hero__line">{{ $homeContent['hero_title_line_1'] }}</span>
+                <span class="hero__line hero__line--2">{{ $homeContent['hero_title_line_2'] }}</span>
             </h1>
-            <p class="hero__tagline">KSB Luxury Homes — Barker and Knox alumni building luxury homes on the North Shore.</p>
+            <p class="hero__tagline">{{ $homeContent['hero_tagline'] }}</p>
         </div>
     </section>
 
@@ -39,10 +41,10 @@
                 <p class="section__label">For KSB</p>
                 <h2 id="about-heading" class="section__title">About KSB Luxury Homes</h2>
                 <div class="section__content">
-                    <p>KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects across the blue chip suburbs of Sydney's North Shore.</p>
-                    <p>Founded and led by alumni of Barker College and Knox Grammar, two of the North Shore's most prestigious institutions, we're not just building in this area—we grew up here. We know these streets, these neighbourhoods, and the families who call them home. That local connection runs through everything we do.</p>
-                    <p>Our goal is to create exceptional homes that set new benchmarks for luxury living. We take the premium residential sector to new heights by delivering projects underpinned by visionary design, superior craftsmanship, and an unwavering commitment to excellence.</p>
-                    <p>For us, building on the North Shore isn’t just business it’s personal.</p>
+                    <p>{{ $homeContent['about_paragraph_1'] }}</p>
+                    <p>{{ $homeContent['about_paragraph_2'] }}</p>
+                    <p>{{ $homeContent['about_paragraph_3'] }}</p>
+                    <p>{{ $homeContent['about_paragraph_4'] }}</p>
                     <a href="{{ route('our-story') }}" class="btn btn--primary">Our Story</a>
                 </div>
             </div>

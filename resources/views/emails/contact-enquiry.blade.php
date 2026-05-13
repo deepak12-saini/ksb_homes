@@ -8,6 +8,10 @@
 <body style="font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; color: #1a1a1a; max-width: 640px;">
     <h1 style="font-size: 1.125rem; margin: 0 0 1rem; font-weight: 600;">New website lead – KSB Homes</h1>
 
+    @if (! empty($enquiry['id']))
+        <p style="margin: 0 0 1rem; font-size: 0.8125rem; color: #64748b;">Saved as enquiry #{{ $enquiry['id'] }} in the website database.</p>
+    @endif
+
     @php
         $looking = $enquiry['looking_to_do'] ?? [];
         $lookingLabel = is_array($looking) ? implode(', ', $looking) : (string) $looking;

@@ -1,7 +1,7 @@
 @extends('layout')
 
-@section('title', 'Contact – KSB homes Design + Construct')
-@section('meta_description', 'Enquire about luxury homes, knockdown rebuilds, and development projects with KSB homes.')
+@section('title', $contactContent['seo_title'])
+@section('meta_description', $contactContent['seo_description'])
 
 @php
     $lf = config('lead_form');
@@ -19,16 +19,20 @@
     <section class="story-hero" aria-label="Contact">
         <div class="story-hero__bg">
             @php
-                $contactHeroCandidates = ['contact-hero.jpg', 'contact-hero.jpeg', 'contact-hero.webp'];
                 $contactHeroUrl = 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&h=900&fit=crop';
-                foreach ($contactHeroCandidates as $file) {
-                    if (file_exists(public_path('assets/images/' . $file))) {
-                        $contactHeroUrl = asset('assets/images/' . $file);
-                        break;
+                if (! empty($contactContent['hero_image'])) {
+                    $contactHeroUrl = asset('storage/'.$contactContent['hero_image']);
+                } else {
+                    $contactHeroCandidates = ['contact-hero.jpg', 'contact-hero.jpeg', 'contact-hero.webp'];
+                    foreach ($contactHeroCandidates as $file) {
+                        if (file_exists(public_path('assets/images/'.$file))) {
+                            $contactHeroUrl = asset('assets/images/'.$file);
+                            break;
+                        }
                     }
                 }
             @endphp
-            <img src="{{ $contactHeroUrl }}" alt="Luxury residential architecture" class="story-hero__img" width="1600" height="900">
+            <img src="{{ $contactHeroUrl }}" alt="{{ $contactContent['hero_image_alt'] }}" class="story-hero__img" width="1600" height="900">
             <div class="story-hero__overlay" aria-hidden="true"></div>
         </div>
     </section>
@@ -37,15 +41,15 @@
         <div class="contact-details-bar__inner">
             <div class="contact-details-bar__item">
                 <span class="contact-details-bar__label">Address</span>
-                <span class="contact-details-bar__value">Wahroonga Sydney NSW</span>
+                <span class="contact-details-bar__value">{{ $contactContent['address_text'] }}</span>
             </div>
             <div class="contact-details-bar__item">
                 <span class="contact-details-bar__label">Phone</span>
-                <a href="tel:+61421670636" class="contact-details-bar__value contact-details-bar__link">0421670636</a>
+                <a href="tel:{{ $contactContent['phone_tel'] }}" class="contact-details-bar__value contact-details-bar__link">{{ $contactContent['phone_display'] }}</a>
             </div>
             <div class="contact-details-bar__item">
                 <span class="contact-details-bar__label">Instagram</span>
-                <a href="https://www.instagram.com/ksbhomes/" class="contact-details-bar__value contact-details-bar__link" target="_blank" rel="noopener noreferrer">@ksbhomes</a>
+                <a href="{{ $contactContent['instagram_url'] }}" class="contact-details-bar__value contact-details-bar__link" target="_blank" rel="noopener noreferrer">{{ $contactContent['instagram_display'] }}</a>
             </div>
         </div>
     </section>
@@ -53,29 +57,29 @@
     <section class="section section--page section--about contact-page contact-page--lead" aria-labelledby="contact-heading">
         <div class="section__inner contact-grid contact-grid--lead">
             <div class="contact-info">
-                <p class="section__label">Contact</p>
-                <h1 id="contact-heading" class="section__title section__title--small">Enquire Now</h1>
+                <p class="section__label">{{ $contactContent['section_label'] }}</p>
+                <h1 id="contact-heading" class="section__title section__title--small">{{ $contactContent['page_heading'] }}</h1>
 
                 <div class="contact-info__block">
                     <h2 class="contact-info__heading">Address</h2>
-                    <p class="contact-info__text">Wahroonga Sydney NSW</p>
+                    <p class="contact-info__text">{{ $contactContent['address_text'] }}</p>
                 </div>
 
                 <div class="contact-info__block">
                     <h2 class="contact-info__heading">Phone</h2>
-                    <p class="contact-info__text"><a href="tel:+61421670636">0421670636</a></p>
+                    <p class="contact-info__text"><a href="tel:{{ $contactContent['phone_tel'] }}">{{ $contactContent['phone_display'] }}</a></p>
                 </div>
 
                 <div class="contact-info__block">
                     <h2 class="contact-info__heading">Instagram</h2>
-                    <p class="contact-info__text"><a href="https://www.instagram.com/ksbhomes/" target="_blank" rel="noopener noreferrer">@ksbhomes</a></p>
+                    <p class="contact-info__text"><a href="{{ $contactContent['instagram_url'] }}" target="_blank" rel="noopener noreferrer">{{ $contactContent['instagram_display'] }}</a></p>
                 </div>
             </div>
 
             <div class="contact-form lead-form">
-                <p class="lead-form__headline">Luxury home &amp; development projects from $1M+</p>
+                <p class="lead-form__headline">{{ $contactContent['form_headline'] }}</p>
                 <p class="contact-form__intro lead-form__intro">
-                    Tell us about your project. We’ll respond to serious enquiries promptly.
+                    {{ $contactContent['form_intro'] }}
                 </p>
 
                 @if (session('contact_success'))

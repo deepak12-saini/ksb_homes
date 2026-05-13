@@ -68,9 +68,13 @@ class ContactEnquiryMail extends Mailable
         }
 
         $diskPath = $this->enquiry['attachment_storage_path'] ?? null;
-        if (is_string($diskPath) && $diskPath !== '' && Storage::disk('local')->exists($diskPath)) {
+        if (is_string($diskPath) && $diskPath !== '') {
             $name = $this->enquiry['attachment_original_name'] ?? basename($diskPath);
-            $attachments[] = Attachment::fromStorageDisk('local', $diskPath)->as((string) $name);
+            if (Storage::disk('public')->exists($diskPath)) {
+                $attachments[] = Attachment::fromStorageDisk('public', $diskPath)->as((string) $name);
+            } elseif (Storage::disk('local')->exists($diskPath)) {
+                $attachments[] = Attachment::fromStorageDisk('local', $diskPath)->as((string) $name);
+            }
         }
 
         return $attachments;

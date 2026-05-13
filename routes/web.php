@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminContactEnquiryController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Admin\AdminNewsletterSubscriberController;
+use App\Http\Controllers\Admin\AdminPageContentController;
 use App\Http\Controllers\Admin\AdminProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
@@ -76,6 +80,18 @@ Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('adm
 
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => redirect()->route('admin.dashboard'));
-    Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('projects', AdminProjectController::class)->except(['show']);
+    Route::get('/page-content/home', [AdminPageContentController::class, 'editHome'])->name('page-content.home.edit');
+    Route::put('/page-content/home', [AdminPageContentController::class, 'updateHome'])->name('page-content.home.update');
+    Route::get('/page-content/our-story', [AdminPageContentController::class, 'editOurStory'])->name('page-content.our-story.edit');
+    Route::put('/page-content/our-story', [AdminPageContentController::class, 'updateOurStory'])->name('page-content.our-story.update');
+    Route::get('/page-content/contact', [AdminPageContentController::class, 'editContact'])->name('page-content.contact.edit');
+    Route::put('/page-content/contact', [AdminPageContentController::class, 'updateContact'])->name('page-content.contact.update');
+
+    Route::get('/contact-enquiries', [AdminContactEnquiryController::class, 'index'])->name('contact-enquiries.index');
+    Route::get('/contact-enquiries/{contact_enquiry}', [AdminContactEnquiryController::class, 'show'])->name('contact-enquiries.show');
+    Route::get('/contact-enquiries/{contact_enquiry}/attachment', [AdminContactEnquiryController::class, 'downloadAttachment'])->name('contact-enquiries.attachment');
+
+    Route::get('/newsletter-subscribers', [AdminNewsletterSubscriberController::class, 'index'])->name('newsletter-subscribers.index');
 });

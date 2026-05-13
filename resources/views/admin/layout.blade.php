@@ -148,6 +148,7 @@
 
         .admin-form input[type="text"],
         .admin-form input[type="number"],
+        .admin-form textarea,
         .admin-form select {
             width: 100%;
             max-width: 400px;
@@ -155,6 +156,11 @@
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             margin-bottom: 1rem;
+        }
+
+        .admin-form textarea {
+            min-height: 90px;
+            resize: vertical;
         }
 
         .admin-form input[type="checkbox"] {
@@ -179,6 +185,63 @@
         .admin-alert--error {
             background: #fee2e2;
             color: #991b1b;
+        }
+
+        .admin-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-stat {
+            padding: 1rem 1.1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        a.admin-stat--link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+
+        a.admin-stat--link:hover {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+        }
+
+        a.admin-stat--link:focus-visible {
+            outline: 2px solid #f97316;
+            outline-offset: 2px;
+        }
+
+        .admin-stat__value {
+            font-size: 1.65rem;
+            font-weight: 700;
+            margin: 0 0 0.35rem;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .admin-stat__label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .admin-muted {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0 0 1rem;
+        }
+
+        .admin-table-wrap {
+            overflow-x: auto;
         }
 
         @media (max-width: 768px) {
@@ -228,6 +291,15 @@
                 </li>
                 <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.projects.*') ? 'admin-sidebar__nav-item--active' : '' }}">
                     <a href="{{ route('admin.projects.index') }}">Manage Projects</a>
+                </li>
+                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.page-content.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                    <a href="{{ route('admin.page-content.home.edit') }}">Page Content</a>
+                </li>
+                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.contact-enquiries.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                    <a href="{{ route('admin.contact-enquiries.index') }}">Contact leads</a>
+                </li>
+                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.newsletter-subscribers.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                    <a href="{{ route('admin.newsletter-subscribers.index') }}">Newsletter</a>
                 </li>
             </ul>
             <div class="admin-sidebar__footer">

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactEnquiryMail;
+use App\Models\ContactEnquiry;
+use App\Models\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -15,7 +16,9 @@ class ContactController extends Controller
 {
     public function index(): View
     {
-        return view('contact');
+        return view('contact', [
+            'contactContent' => PageContent::getPageValues('contact', PageContent::contactDefaults()),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -73,24 +76,46 @@ class ContactController extends Controller
         if ($request->hasFile('plans')) {
             $file = $request->file('plans');
             $attachmentOriginal = $file->getClientOriginalName();
-            $attachmentStoragePath = $file->store('contact-uploads', 'local');
+            $attachmentStoragePath = $file->store('contact-enquiry-plans', 'public');
         }
 
-        $payload = array_merge($validated, [
+        $enquiry = ContactEnquiry::create([
+            'full_name' => $validated['full_name'],
+            'phone' => $validated['phone'],
+            'email' => $validated['email'],
+            'suburb_postcode' => $validated['suburb_postcode'],
+            'looking_to_do' => $validated['looking_to_do'],
+            'land_owner' => $validated['land_owner'],
+            'site_address' => $validated['site_address'] ?? null,
+            'project_type' => $validated['project_type'],
+            'budget' => $validated['budget'],
+            'timeline' => $validated['timeline'],
+            'project_stage' => $validated['project_stage'],
+            'project_goal' => $validated['project_goal'],
+            'estimated_project_value' => $validated['estimated_project_value'] ?? null,
+            'number_of_dwellings' => $validated['number_of_dwellings'] ?? null,
+            'looking_for_partner' => $validated['looking_for_partner'] ?? null,
+            'hear_about_us' => $validated['hear_about_us'],
+            'hear_about_other' => $validated['hear_about_other'] ?? null,
+            'message' => $validated['message'] ?? null,
+            'consent' => true,
             'attachment_storage_path' => $attachmentStoragePath,
             'attachment_original_name' => $attachmentOriginal,
         ]);
 
+        $payload = array_merge($validated, [
+            'attachment_storage_path' => $attachmentStoragePath,
+            'attachment_original_name' => $attachmentOriginal,
+            'id' => $enquiry->id,
+        ]);
+
         $to = config('mail.contact_to');
         if (! is_string($to) || $to === '') {
-            Log::warning('Contact form: mail.contact_to is not configured.');
-            if ($attachmentStoragePath) {
-                Storage::disk('local')->delete($attachmentStoragePath);
-            }
+            Log::warning('Contact form: mail.contact_to is not configured.', ['contact_enquiry_id' => $enquiry->id]);
 
             return back()
                 ->withInput()
-                ->with('contact_error', 'Email is not configured. Please contact us by phone or email.');
+                ->with('contact_error', 'Email is not configured. Your enquiry was saved; please contact us by phone or email.');
         }
 
         try {
@@ -98,24 +123,19 @@ class ContactController extends Controller
             Mail::to($to)->send($mailable);
             Log::info('Contact form email sent', [
                 'to' => $to,
+                'contact_enquiry_id' => $enquiry->id,
                 'static_pdf' => $mailable->staticLeadPdfWillAttach(),
                 'upload_path' => $attachmentStoragePath,
             ]);
         } catch (\Throwable $e) {
             Log::error('Contact form email failed', [
                 'message' => $e->getMessage(),
+                'contact_enquiry_id' => $enquiry->id,
             ]);
-            if ($attachmentStoragePath) {
-                Storage::disk('local')->delete($attachmentStoragePath);
-            }
 
             return back()
                 ->withInput()
-                ->with('contact_error', 'We could not send your message right now. Please email us directly or try again shortly.');
-        }
-
-        if ($attachmentStoragePath) {
-            Storage::disk('local')->delete($attachmentStoragePath);
+                ->with('contact_error', 'We could not send email right now, but your enquiry was saved. Please email us directly or try again shortly.');
         }
 
         return back()
