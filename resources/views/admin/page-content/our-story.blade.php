@@ -3,15 +3,15 @@
 @section('title', 'Page Content – Our Story')
 
 @section('content')
-    <div class="admin-card">
-        <h2 style="margin-top:0;">Page Content</h2>
+    <div class="admin-card admin-card--page-editor">
         @include('admin.page-content._tabs', ['activeTab' => 'our-story'])
+        <p class="admin-muted" style="margin-top:-0.5rem; margin-bottom:1.25rem;">Edit Our Story hero, vision, founders, services, and images.</p>
 
         <form action="{{ route('admin.page-content.our-story.update') }}" method="post" enctype="multipart/form-data" class="admin-form">
             @csrf
             @method('PUT')
 
-            <h3 style="margin-top:0;">SEO</h3>
+            <h3 class="admin-section-title">SEO</h3>
             <div class="form-group">
                 <label for="seo_title">Browser title *</label>
                 <input type="text" name="seo_title" id="seo_title" value="{{ old('seo_title', $content['seo_title']) }}" required>
@@ -21,9 +21,9 @@
                 <textarea name="seo_description" id="seo_description" required>{{ old('seo_description', $content['seo_description']) }}</textarea>
             </div>
 
-            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.25rem 0;">
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
 
-            <h3 style="margin-top:0;">Hero</h3>
+            <h3 class="admin-section-title">Hero</h3>
             <div class="form-group">
                 <label for="hero_label">Label above title *</label>
                 <input type="text" name="hero_label" id="hero_label" value="{{ old('hero_label', $content['hero_label']) }}" required>
@@ -36,15 +36,16 @@
                 <label for="hero_image">Hero background image</label>
                 <input type="file" name="hero_image" id="hero_image" accept="image/*">
                 @if (!empty($content['hero_image']))
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">
-                        Current: <img src="{{ asset('storage/'.$content['hero_image']) }}" alt="" style="max-height: 60px; vertical-align: middle;">
-                    </p>
+                    <p class="admin-muted" style="margin-top: 0.5rem; margin-bottom: 0.25rem;">Current image</p>
+                    <div class="admin-thumb-preview">
+                        <img src="{{ asset('storage/'.$content['hero_image']) }}" alt="Hero preview">
+                    </div>
                 @endif
             </div>
 
-            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.25rem 0;">
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
 
-            <h3 style="margin-top:0;">Vision block</h3>
+            <h3 class="admin-section-title">Vision block</h3>
             <div class="form-group">
                 <label for="vision_heading">Section heading *</label>
                 <input type="text" name="vision_heading" id="vision_heading" value="{{ old('vision_heading', $content['vision_heading']) }}" required>
@@ -61,15 +62,16 @@
                 <label for="vision_image">Vision image (right side)</label>
                 <input type="file" name="vision_image" id="vision_image" accept="image/*">
                 @if (!empty($content['vision_image']))
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">
-                        Current: <img src="{{ asset('storage/'.$content['vision_image']) }}" alt="" style="max-height: 60px; vertical-align: middle;">
-                    </p>
+                    <p class="admin-muted" style="margin-top: 0.5rem; margin-bottom: 0.25rem;">Current image</p>
+                    <div class="admin-thumb-preview">
+                        <img src="{{ asset('storage/'.$content['vision_image']) }}" alt="Vision preview">
+                    </div>
                 @endif
             </div>
 
-            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.25rem 0;">
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
 
-            <h3 style="margin-top:0;">Founders block</h3>
+            <h3 class="admin-section-title">Founders block</h3>
             <div class="form-group">
                 <label for="founders_heading">Section heading *</label>
                 <input type="text" name="founders_heading" id="founders_heading" value="{{ old('founders_heading', $content['founders_heading']) }}" required>
@@ -82,15 +84,16 @@
                 <label for="founders_image">Founders image</label>
                 <input type="file" name="founders_image" id="founders_image" accept="image/*">
                 @if (!empty($content['founders_image']))
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">
-                        Current: <img src="{{ asset('storage/'.$content['founders_image']) }}" alt="" style="max-height: 60px; vertical-align: middle;">
-                    </p>
+                    <p class="admin-muted" style="margin-top: 0.5rem; margin-bottom: 0.25rem;">Current image</p>
+                    <div class="admin-thumb-preview">
+                        <img src="{{ asset('storage/'.$content['founders_image']) }}" alt="Founders preview">
+                    </div>
                 @endif
             </div>
 
-            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.25rem 0;">
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
 
-            <h3 style="margin-top:0;">Services</h3>
+            <h3 class="admin-section-title">Services</h3>
             <div class="form-group">
                 <label for="services_heading">Section heading *</label>
                 <input type="text" name="services_heading" id="services_heading" value="{{ old('services_heading', $content['services_heading']) }}" required>

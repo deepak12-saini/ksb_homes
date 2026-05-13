@@ -244,6 +244,89 @@
             overflow-x: auto;
         }
 
+        /* Page content editor (Home / Our Story / Contact) */
+        .admin-card--page-editor {
+            max-width: 920px;
+        }
+
+        .admin-page-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            padding: 0.4rem;
+            background: #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-pill-tab {
+            display: inline-block;
+            padding: 0.5rem 1.1rem;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #475569;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .admin-pill-tab:hover {
+            background: rgba(255, 255, 255, 0.85);
+            color: #0f172a;
+        }
+
+        .admin-pill-tab--active {
+            background: #0f172a;
+            color: #f8fafc;
+            border-color: #0f172a;
+        }
+
+        .admin-pill-tab--active:hover {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        .admin-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 0 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .admin-card--page-editor .admin-form input[type="text"],
+        .admin-card--page-editor .admin-form input[type="url"],
+        .admin-card--page-editor .admin-form textarea,
+        .admin-card--page-editor .admin-form select {
+            max-width: min(100%, 42rem);
+        }
+
+        .admin-card--page-editor .admin-form textarea {
+            max-width: min(100%, 52rem);
+        }
+
+        .admin-card--page-editor .admin-form .admin-btn[type="submit"] {
+            margin-top: 0.75rem;
+        }
+
+        .admin-thumb-preview {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .admin-thumb-preview img {
+            max-height: 72px;
+            vertical-align: middle;
+            border-radius: 4px;
+        }
+
         @media (max-width: 768px) {
             .admin-shell {
                 flex-direction: column;
