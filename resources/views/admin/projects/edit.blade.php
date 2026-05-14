@@ -31,6 +31,31 @@
                     <p style="margin-top: 0.25rem; font-size: 0.875rem;">Current: <img src="{{ $project->public_image_url }}" alt="" style="max-height: 60px; vertical-align: middle;"></p>
                 @endif
             </div>
+            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Project details (public page)</h3>
+            <div class="form-group">
+                <label for="architecture">Architecture</label>
+                <input type="text" name="architecture" id="architecture" value="{{ old('architecture', $project->architecture) }}" placeholder="e.g. by KSB homes">
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" value="{{ old('location', $project->location) }}">
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <input type="text" name="status" id="status" value="{{ old('status', $project->status) }}" placeholder="e.g. Current">
+            </div>
+            <div class="form-group">
+                <label for="property_type">Property type</label>
+                <input type="text" name="property_type" id="property_type" value="{{ old('property_type', $project->property_type) }}">
+            </div>
+            <div class="form-group">
+                <label for="no">No.</label>
+                <input type="text" name="no" id="no" value="{{ old('no', $project->no) }}">
+            </div>
+            <div class="form-group">
+                <label for="levels">Levels</label>
+                <input type="text" name="levels" id="levels" value="{{ old('levels', $project->levels) }}">
+            </div>
             <div class="form-group">
                 <label><input type="checkbox" name="featured_on_home" value="1" {{ old('featured_on_home', $project->featured_on_home) ? 'checked' : '' }}> Show on home page (featured in Projects section)</label>
             </div>

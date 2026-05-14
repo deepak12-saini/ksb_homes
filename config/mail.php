@@ -132,14 +132,18 @@ return [
     | Lead email PDF (optional)
     |--------------------------------------------------------------------------
     |
-    | If MAIL_LEAD_PDF is set and the file exists, it is attached to every
-    | website lead email (e.g. brochure for the inbox recipient).
+    | If MAIL_LEAD_PDF is set and the file exists, that file is attached to
+    | every website lead email (brochure for the inbox recipient).
     | Path: absolute, or relative to storage/app (e.g. lead-email/guide.pdf),
     | or relative to public/ (e.g. downloads/guide.pdf).
+    |
+    | If MAIL_LEAD_PDF is empty and MAIL_LEAD_PDF_GENERATE_DEFAULT is true,
+    | a built-in HTML welcome sheet is rendered to PDF and attached instead.
     |
     */
 
     'lead_pdf_path' => env('MAIL_LEAD_PDF'),
     'lead_pdf_name' => env('MAIL_LEAD_PDF_NAME', 'KSB Homes - information.pdf'),
+    'lead_pdf_generate_default' => env('MAIL_LEAD_PDF_GENERATE_DEFAULT', true),
 
 ];

@@ -62,10 +62,12 @@ class ContactEnquiryMail extends Mailable
     {
         $attachments = [];
 
-        $static = $this->resolveStaticLeadPdfAttachment();
-        if ($static !== null) {
-            $attachments[] = $static;
-        }
+        // TODO: When the client confirms the project guide PDF should go out with lead emails,
+        // uncomment the block below and restore staticLeadPdfWillAttach() to match.
+        // $brochure = $this->resolveLeadBrochureAttachment();
+        // if ($brochure !== null) {
+        //     $attachments[] = $brochure;
+        // }
 
         $diskPath = $this->enquiry['attachment_storage_path'] ?? null;
         if (is_string($diskPath) && $diskPath !== '') {
@@ -82,10 +84,20 @@ class ContactEnquiryMail extends Mailable
 
     public function staticLeadPdfWillAttach(): bool
     {
-        return $this->resolveStaticLeadPdfAttachment() !== null;
+        // When client confirms project guide PDF: uncomment brochure block in attachments()
+        // and replace this body with:
+        //   if ($this->resolveConfiguredLeadPdfAttachment() !== null) { return true; }
+        //   return (bool) config('mail.lead_pdf_generate_default', true);
+        return false;
     }
 
-    protected function resolveStaticLeadPdfAttachment(): ?Attachment
+    protected function resolveLeadBrochureAttachment(): ?Attachment
+    {
+        return $this->resolveConfiguredLeadPdfAttachment()
+            ?? $this->resolveGeneratedLeadPdfAttachment();
+    }
+
+    protected function resolveConfiguredLeadPdfAttachment(): ?Attachment
     {
         $configured = config('mail.lead_pdf_path');
         if (! is_string($configured) || trim($configured) === '') {
@@ -110,5 +122,20 @@ class ContactEnquiryMail extends Mailable
         }
 
         return null;
+    }
+
+    protected function resolveGeneratedLeadPdfAttachment(): ?Attachment
+    {
+        if (! (bool) config('mail.lead_pdf_generate_default', true)) {
+            return null;
+        }
+
+        $displayName = (string) config('mail.lead_pdf_name', 'KSB Homes - information.pdf');
+        $generator = app(\App\Services\LeadWelcomePdfGenerator::class);
+
+        return Attachment::fromData(
+            fn () => $generator->binary(),
+            $displayName
+        )->withMime('application/pdf');
     }
 }
