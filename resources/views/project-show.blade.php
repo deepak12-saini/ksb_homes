@@ -30,7 +30,6 @@
                 >
             </div>
             <div class="project-detail__panel">
-                <p class="project-detail__label">{{ $project->category->name ?? 'Project' }}</p>
                 <h1 id="project-heading" class="project-detail__title">{{ $project->name }}</h1>
                 <dl class="project-detail__meta">
                     @if (filled($project->architecture))

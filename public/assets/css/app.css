@@ -2341,15 +2341,6 @@ a.site-footer__office-link:hover {
     gap: var(--space-lg);
 }
 
-.project-detail__label {
-    margin: 0;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #888;
-}
-
 .project-detail__title {
     margin: 0;
     font-family: var(--font-body);
