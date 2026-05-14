@@ -56,7 +56,7 @@
         </div>
     </section>
 
-    {{-- Two featured projects from DB: images + names below (no overlay badge) --}}
+    {{-- Two featured projects: large cards + same hover treatment as /projects listing --}}
     @if ($spotlight->isNotEmpty())
         <section class="section section--two-col section--home-spotlight" aria-label="Featured projects">
             <div class="section__inner section__inner--relative">
@@ -69,8 +69,12 @@
                                 @else
                                     <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
                                 @endif
+                                <span class="project-card__hover-overlay" aria-hidden="true"></span>
+                                <span class="project-card__hover-mark" aria-hidden="true">KSB<sup class="project-card__hover-tm">™</sup></span>
+                                <span class="project-card__hover-cta" aria-hidden="true">View project</span>
+                                <span class="project-card__title">{{ $project->name }}</span>
                             </div>
-                            <p class="home-spotlight__name">{{ $project->name }}</p>
+                            <span class="project-card__caption project-card__caption--spotlight" aria-hidden="true">{{ $project->name }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -107,8 +111,12 @@
                                 @else
                                     <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                                 @endif
+                                <span class="project-card__hover-overlay" aria-hidden="true"></span>
+                                <span class="project-card__hover-mark" aria-hidden="true">KSB<sup class="project-card__hover-tm">™</sup></span>
+                                <span class="project-card__hover-cta" aria-hidden="true">View project</span>
+                                <span class="project-card__title">{{ $project->name }}</span>
                             </div>
-                            <span class="project-card__title">{{ $project->name }}</span>
+                            <span class="project-card__caption" aria-hidden="true">{{ $project->name }}</span>
                         </a>
                     @endforeach
                 </div>
