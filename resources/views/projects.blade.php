@@ -40,7 +40,7 @@
                                 <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=500&fit=crop" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                             @endif
                             <span class="project-card__hover-overlay" aria-hidden="true"></span>
-                            <span class="project-card__hover-mark" aria-hidden="true">KSB<sup class="project-card__hover-tm">™</sup></span>
+                            <span class="project-card__hover-mark" aria-hidden="true">KSB LUXURY HOMES</span>
                             <span class="project-card__hover-cta" aria-hidden="true">View project</span>
                             <span class="project-card__title">{{ $project->name }}</span>
                         </div>

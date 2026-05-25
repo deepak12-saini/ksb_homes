@@ -13,8 +13,6 @@
                 : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80');
         /** First two “Show on home” projects: large side-by-side images, names below (no badges). */
         $spotlight = $featuredProjects->take(2);
-        /** Remaining featured projects in the Collection grid (names below images). */
-        $collectionRest = $featuredProjects->slice(2)->values();
     @endphp
 
     {{-- Hero section: full-bleed video with overlaid text (reference: graya.com.au) --}}
@@ -70,7 +68,7 @@
                                     <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="home-spotlight__img" width="700" height="900" loading="lazy">
                                 @endif
                                 <span class="project-card__hover-overlay" aria-hidden="true"></span>
-                                <span class="project-card__hover-mark" aria-hidden="true">KSB<sup class="project-card__hover-tm">™</sup></span>
+                                <span class="project-card__hover-mark" aria-hidden="true">KSB LUXURY HOMES</span>
                                 <span class="project-card__hover-cta" aria-hidden="true">View project</span>
                                 <span class="project-card__title">{{ $project->name }}</span>
                             </div>
@@ -82,18 +80,13 @@
         </section>
     @endif
 
-    {{-- Further featured projects (3rd+): names under images in grid --}}
+    {{-- All featured projects: names under images in grid --}}
     <section id="collection" class="section section--collection section--home-collection" aria-labelledby="collection-heading">
         <div class="section__inner">
             <p class="section__label">Collection</p>
             <h2 id="collection-heading" class="section__title">Projects</h2>
             @php
-                /**
-                 * 3+ featured: first 2 are in spotlight above; grid shows from project #3.
-                 * 1–2 featured: spotlight shows them; grid would be empty unless we repeat the same projects here—so we list all featured in the grid to avoid a blank “Projects” block.
-                 */
-                $collectionGridProjects = $featuredProjects->count() > 2 ? $collectionRest : $featuredProjects;
-                $count = $collectionGridProjects->count();
+                $count = $featuredProjects->count();
                 $gridClass = 'projects-grid';
                 if ($count >= 1 && $count <= 2) {
                     $gridClass .= ' projects-grid--pair';
@@ -103,7 +96,7 @@
             @endphp
             @if ($featuredProjects->isNotEmpty())
                 <div class="{{ $gridClass }}">
-                    @foreach ($collectionGridProjects as $project)
+                    @foreach ($featuredProjects as $project)
                         <a href="{{ route('projects.show', $project) }}" class="project-card project-card--stacked">
                             <div class="project-card__media">
                                 @if ($project->image)
@@ -112,7 +105,7 @@
                                     <img src="{{ $placeholder }}" alt="{{ $project->name }}" class="project-card__img" width="400" height="500" loading="lazy">
                                 @endif
                                 <span class="project-card__hover-overlay" aria-hidden="true"></span>
-                                <span class="project-card__hover-mark" aria-hidden="true">KSB<sup class="project-card__hover-tm">™</sup></span>
+                                <span class="project-card__hover-mark" aria-hidden="true">KSB LUXURY HOMES</span>
                                 <span class="project-card__hover-cta" aria-hidden="true">View project</span>
                                 <span class="project-card__title">{{ $project->name }}</span>
                             </div>
