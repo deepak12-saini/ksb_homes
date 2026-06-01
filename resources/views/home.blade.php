@@ -122,4 +122,104 @@
             </div>
         </div>
     </section>
+
+    {{-- Instagram demo (not live yet). Rotating preview of Insta posts. --}}
+    <section id="instagram" class="section section--instagram-demo" aria-labelledby="instagram-heading">
+        <div class="section__inner">
+            <p class="section__label">Instagram</p>
+            <h2 id="instagram-heading" class="section__title">KSB Luxury Homes</h2>
+
+            <div class="instagram-demo">
+                <div class="instagram-demo__carousel" aria-label="Instagram demo posts">
+                    <div class="instagram-demo__viewport">
+                        <div class="instagram-demo__track">
+                            {{-- Page 1 (2 posts) --}}
+                            <div class="instagram-demo__page">
+                                <a
+                                    href="https://www.instagram.com/ksbhomes/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="instagram-demo__tile"
+                                >
+                                    <img
+                                        src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=1200&h=800&fit=crop"
+                                        alt="Instagram demo post 1"
+                                        loading="lazy"
+                                    >
+                                </a>
+                                <a
+                                    href="https://www.instagram.com/ksbhomes/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="instagram-demo__tile"
+                                >
+                                    <img
+                                        src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&h=800&fit=crop"
+                                        alt="Instagram demo post 2"
+                                        loading="lazy"
+                                    >
+                                </a>
+                            </div>
+
+                            {{-- Page 2 (2 posts) --}}
+                            <div class="instagram-demo__page">
+                                <a
+                                    href="https://www.instagram.com/ksbhomes/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="instagram-demo__tile"
+                                >
+                                    <img
+                                        src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200&h=800&fit=crop"
+                                        alt="Instagram demo post 3"
+                                        loading="lazy"
+                                    >
+                                </a>
+                                <a
+                                    href="https://www.instagram.com/ksbhomes/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="instagram-demo__tile"
+                                >
+                                    <img
+                                        src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&h=800&fit=crop"
+                                        alt="Instagram demo post 4"
+                                        loading="lazy"
+                                    >
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instagram-demo__actions">
+                    <a href="https://www.instagram.com/ksbhomes/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+                        View on Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const carousel = document.querySelector('.instagram-demo__carousel');
+                if (!carousel) return;
+
+                const viewport = carousel.querySelector('.instagram-demo__viewport');
+                const pages = carousel.querySelectorAll('.instagram-demo__page');
+                if (!viewport || !pages || pages.length < 2) return;
+
+                let index = 0;
+                const intervalMs = 4000;
+
+                setInterval(() => {
+                    index = (index + 1) % pages.length;
+                    viewport.scrollTo({
+                        left: index * viewport.clientWidth,
+                        behavior: 'smooth'
+                    });
+                }, intervalMs);
+            });
+        </script>
+    </section>
 @endsection
