@@ -55,7 +55,7 @@
     </section>
 
     {{-- Two featured projects: large cards + same hover treatment as /projects listing --}}
-    @if ($spotlight->isNotEmpty())
+    <!-- @if ($spotlight->isNotEmpty())
         <section class="section section--two-col section--home-spotlight" aria-label="Featured projects">
             <div class="section__inner section__inner--relative">
                 <div class="home-spotlight__grid {{ $spotlight->count() === 1 ? 'home-spotlight__grid--single' : '' }}">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif -->
 
     {{-- All featured projects: names under images in grid --}}
     <section id="collection" class="section section--collection section--home-collection" aria-labelledby="collection-heading">
