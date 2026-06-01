@@ -210,10 +210,17 @@
                 if (!viewport || !pages || pages.length < 2) return;
 
                 let index = 0;
+                let direction = 1;
                 const intervalMs = 4000;
 
                 setInterval(() => {
-                    index = (index + 1) % pages.length;
+                    if (index === pages.length - 1) {
+                        direction = -1;
+                    } else if (index === 0) {
+                        direction = 1;
+                    }
+
+                    index += direction;
                     viewport.scrollTo({
                         left: index * viewport.clientWidth,
                         behavior: 'smooth'
