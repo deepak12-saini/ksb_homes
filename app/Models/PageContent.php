@@ -41,17 +41,17 @@ class PageContent extends Model
     public static function ourStoryDefaults(): array
     {
         return [
-            'seo_title' => 'Our Story – KSB homes Design + Construct',
-            'seo_description' => 'Learn about KSB homes – award-winning design, development, and construction.',
+            'seo_title' => 'Our Story | KSB Luxury Homes – Design & Construction, Sydney North Shore',
+            'seo_description' => 'Learn about KSB Luxury Homes – premium design, development and construction for luxury residential projects across Sydney\'s North Shore.',
             'hero_label' => 'About',
             'hero_title' => 'Visionary design and construction excellence',
             'hero_image' => null,
             'vision_heading' => 'Vision',
-            'vision_paragraph_1' => 'KSB homes is an award-winning design, development, and construction company specialising in luxury residential projects.',
+            'vision_paragraph_1' => 'KSB Luxury Homes is a high-end design, development and construction company specialising in luxury residential projects.',
             'vision_paragraph_2' => 'Our goal is to create exceptional projects that set new benchmarks for luxury living.',
             'vision_image' => null,
             'founders_heading' => 'Founders',
-            'founders_paragraph_1' => 'KSB Homes is a dedicated construction and home building company focused on delivering quality residential projects.',
+            'founders_paragraph_1' => 'KSB Luxury Homes is a dedicated construction and home building company focused on delivering quality residential projects across Sydney\'s North Shore.',
             'founders_image' => null,
             'services_heading' => 'Services',
             'services_intro' => 'Architecture, development, and construction—delivered with a single vision from concept to completion.',
@@ -68,8 +68,8 @@ class PageContent extends Model
     public static function contactDefaults(): array
     {
         return [
-            'seo_title' => 'Contact – KSB homes Design + Construct',
-            'seo_description' => 'Enquire about luxury homes, knockdown rebuilds, and development projects with KSB homes.',
+            'seo_title' => 'Contact KSB Luxury Homes | Enquire About Your Project',
+            'seo_description' => 'Contact KSB Luxury Homes to enquire about luxury homes, knockdown rebuilds and development projects on Sydney\'s North Shore.',
             'hero_image' => null,
             'hero_image_alt' => 'Luxury residential architecture',
             'address_text' => 'Wahroonga Sydney NSW',

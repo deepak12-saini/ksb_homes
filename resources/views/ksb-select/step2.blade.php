@@ -1,7 +1,8 @@
 @extends('layout')
 
-@section('title', 'Tell us about your project | KSB SELECT')
-@section('meta_description', 'Describe your custom project for KSB homes.')
+@section('title', 'Describe Your Project | KSB SELECT – KSB Luxury Homes')
+@section('meta_description', 'Share your custom project details with KSB Luxury Homes. KSB SELECT helps deliver bespoke residential builds across Sydney\'s North Shore.')
+@section('canonical', route('ksb-select.step2'))
 
 @section('content')
     <section class="story-hero story-hero--compact" aria-label="KSB SELECT">

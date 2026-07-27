@@ -2,6 +2,7 @@
 
 @section('title', $storyContent['seo_title'])
 @section('meta_description', $storyContent['seo_description'])
+@section('canonical', route('our-story'))
 
 @section('content')
     @php

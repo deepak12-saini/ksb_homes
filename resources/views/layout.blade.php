@@ -5,30 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $seoTitle = trim($__env->yieldContent('title', 'KSB homes Design + Construct'));
-        $seoDescription = trim($__env->yieldContent('meta_description', 'KSB homes - award-winning design, development, and construction for luxury residential projects.'));
+        $seoBaseUrl = rtrim(config('app.url'), '/');
+        $seoTitle = trim($__env->yieldContent('title', 'KSB Luxury Homes | Design, Development & Construction – Sydney North Shore'));
+        $seoDescription = trim($__env->yieldContent('meta_description', 'KSB Luxury Homes designs, develops and constructs premium residential projects across Sydney\'s North Shore. Luxury homes built with local craftsmanship and vision.'));
         $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
         $seoRobots = trim($__env->yieldContent('meta_robots', 'index,follow'));
         $seoOgType = trim($__env->yieldContent('og_type', 'website'));
         $seoImage = trim($__env->yieldContent('og_image', asset('assets/images/hero-poster.jpg')));
-        $seoSiteName = config('app.name', 'KSB homes');
+        if ($seoImage && ! str_starts_with($seoImage, 'http')) {
+            $seoImage = url($seoImage);
+        }
+        $seoSiteName = 'KSB Luxury Homes';
         $seoSchema = [
             '@context' => 'https://schema.org',
             '@graph' => [
                 [
-                    '@type' => 'Organization',
-                    '@id' => rtrim(config('app.url'), '/').'#organization',
-                    'name' => 'KSB homes',
-                    'url' => rtrim(config('app.url'), '/'),
-                    'logo' => asset('favicon.svg'),
+                    '@type' => ['Organization', 'HomeAndConstructionBusiness'],
+                    '@id' => $seoBaseUrl.'#organization',
+                    'name' => 'KSB Luxury Homes',
+                    'alternateName' => 'KSB Homes',
+                    'url' => $seoBaseUrl,
+                    'logo' => asset('assets/images/ksb_logo.svg'),
+                    'image' => $seoImage,
+                    'description' => 'High-end design, development and construction for luxury residential projects on Sydney\'s North Shore.',
+                    'areaServed' => [
+                        '@type' => 'Place',
+                        'name' => 'Sydney North Shore, NSW, Australia',
+                    ],
+                    'address' => [
+                        '@type' => 'PostalAddress',
+                        'addressLocality' => 'Wahroonga',
+                        'addressRegion' => 'NSW',
+                        'addressCountry' => 'AU',
+                    ],
+                    'telephone' => '+61421670636',
+                    'sameAs' => [
+                        'https://www.instagram.com/ksbhomes/',
+                    ],
                 ],
                 [
                     '@type' => 'WebSite',
-                    '@id' => rtrim(config('app.url'), '/').'#website',
-                    'url' => rtrim(config('app.url'), '/'),
-                    'name' => 'KSB homes',
+                    '@id' => $seoBaseUrl.'#website',
+                    'url' => $seoBaseUrl,
+                    'name' => 'KSB Luxury Homes',
                     'publisher' => [
-                        '@id' => rtrim(config('app.url'), '/').'#organization',
+                        '@id' => $seoBaseUrl.'#organization',
                     ],
                     'inLanguage' => str_replace('_', '-', app()->getLocale()),
                 ],
@@ -38,8 +59,12 @@
     <title>{{ $seoTitle }}</title>
     <meta name="description" content="{{ $seoDescription }}">
     <meta name="robots" content="{{ $seoRobots }}">
+    <meta name="author" content="KSB Luxury Homes">
+    <meta name="geo.region" content="AU-NSW">
+    <meta name="geo.placename" content="Sydney North Shore">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:site_name" content="{{ $seoSiteName }}">
+    <meta property="og:locale" content="en_AU">
     <meta property="og:type" content="{{ $seoOgType }}">
     <meta property="og:title" content="{{ $seoTitle }}">
     <meta property="og:description" content="{{ $seoDescription }}">

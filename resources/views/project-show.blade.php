@@ -1,16 +1,47 @@
 @extends('layout')
 
-@section('title', $project->name . ' – KSB homes')
-@section('meta_description', 'Discover ' . $project->name . ' by KSB homes, a luxury residential project on Sydney\'s North Shore.')
-@section('canonical', route('projects.show', $project))
-@if ($project->public_image_url)
-    @section('og_image', $project->public_image_url)
-@endif
-
 @php
+    $projectSeoLocation = $project->location ?: "Sydney's North Shore";
+    $projectSeoDescription = trim(implode(' ', array_filter([
+        'Discover '.$project->name.' by KSB Luxury Homes.',
+        $project->property_type ? $project->property_type.' project' : 'Luxury residential project',
+        'in '.$projectSeoLocation.'.',
+        $project->architecture ? 'Architecture: '.$project->architecture.'.' : null,
+        $project->status ? 'Status: '.$project->status.'.' : null,
+    ])));
     $projectHeroImage = $project->public_image_url
         ?? 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=900&fit=crop';
 @endphp
+
+@section('title', $project->name.' | KSB Luxury Homes – '.$projectSeoLocation)
+@section('meta_description', \Illuminate\Support\Str::limit($projectSeoDescription, 155, ''))
+@section('canonical', route('projects.show', $project))
+@section('og_type', 'article')
+@section('og_image', url($project->public_image_url ?: $projectHeroImage))
+
+@push('scripts')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Residence',
+    'name' => $project->name,
+    'description' => $projectSeoDescription,
+    'url' => route('projects.show', $project),
+    'image' => url($project->public_image_url ?: $projectHeroImage),
+    'address' => array_filter([
+        '@type' => 'PostalAddress',
+        'addressLocality' => $project->location ?: 'Sydney North Shore',
+        'addressRegion' => 'NSW',
+        'addressCountry' => 'AU',
+    ]),
+    'provider' => [
+        '@type' => 'Organization',
+        'name' => 'KSB Luxury Homes',
+        'url' => rtrim(config('app.url'), '/'),
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
 @section('content')
     <article class="project-detail" aria-labelledby="project-heading">

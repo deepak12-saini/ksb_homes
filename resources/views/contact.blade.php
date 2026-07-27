@@ -2,6 +2,7 @@
 
 @section('title', $contactContent['seo_title'])
 @section('meta_description', $contactContent['seo_description'])
+@section('canonical', route('contact.index'))
 
 @php
     $lf = config('lead_form');

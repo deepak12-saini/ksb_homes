@@ -1,13 +1,14 @@
 @extends('layout')
 
-@section('title', 'Projects – KSB homes Design + Construct')
-@section('meta_description', 'Explore our portfolio of luxury residential projects.')
+@section('title', 'Luxury Residential Projects | KSB Luxury Homes – Sydney North Shore')
+@section('meta_description', 'Explore KSB Luxury Homes projects across Sydney\'s North Shore. View our portfolio of premium residential and multi-residential builds.')
+@section('canonical', route('projects.index'))
 
 @section('content')
     {{-- Hero: full-width image --}}
     <section class="projects-hero" aria-label="Projects">
         <div class="projects-hero__bg">
-            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=700&fit=crop" alt="" class="projects-hero__img">
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&h=700&fit=crop" alt="Luxury residential architecture by KSB Luxury Homes" class="projects-hero__img">
             <div class="projects-hero__overlay" aria-hidden="true"></div>
         </div>
     </section>

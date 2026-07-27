@@ -20,6 +20,8 @@ class AdminPageContentController extends Controller
     public function updateHome(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'seo_title' => ['required', 'string', 'max:255'],
+            'seo_description' => ['required', 'string', 'max:500'],
             'hero_title_line_1' => ['required', 'string', 'max:255'],
             'hero_title_line_2' => ['required', 'string', 'max:255'],
             'hero_tagline' => ['required', 'string', 'max:500'],
@@ -31,6 +33,8 @@ class AdminPageContentController extends Controller
         ]);
 
         $contentToSave = [
+            'seo_title' => $validated['seo_title'],
+            'seo_description' => $validated['seo_description'],
             'hero_title_line_1' => $validated['hero_title_line_1'],
             'hero_title_line_2' => $validated['hero_title_line_2'],
             'hero_tagline' => $validated['hero_tagline'],
@@ -168,6 +172,8 @@ class AdminPageContentController extends Controller
     private function homeDefaults(): array
     {
         return [
+            'seo_title' => 'KSB Luxury Homes | Design, Development & Construction – Sydney North Shore',
+            'seo_description' => 'KSB Luxury Homes designs, develops and constructs premium residential projects across Sydney\'s North Shore. Luxury homes built with local craftsmanship and vision.',
             'hero_title_line_1' => 'BUILDING',
             'hero_title_line_2' => 'DREAM HOMES',
             'hero_tagline' => 'KSB Luxury Homes — Barker and Knox alumni building luxury homes on the North Shore.',

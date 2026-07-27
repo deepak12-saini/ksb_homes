@@ -22,11 +22,11 @@ Route::get('/media/projects/{filename}', [PublicProjectImageController::class, '
 
 Route::get('/sitemap.xml', function () {
     $staticPages = [
-        ['loc' => route('home'), 'lastmod' => now()],
-        ['loc' => route('our-story'), 'lastmod' => now()],
-        ['loc' => route('projects.index'), 'lastmod' => now()],
-        ['loc' => route('contact.index'), 'lastmod' => now()],
-        ['loc' => route('ksb-select.index'), 'lastmod' => now()],
+        ['loc' => route('home'), 'lastmod' => now(), 'changefreq' => 'weekly', 'priority' => '1.0'],
+        ['loc' => route('our-story'), 'lastmod' => now(), 'changefreq' => 'monthly', 'priority' => '0.8'],
+        ['loc' => route('projects.index'), 'lastmod' => now(), 'changefreq' => 'weekly', 'priority' => '0.9'],
+        ['loc' => route('contact.index'), 'lastmod' => now(), 'changefreq' => 'monthly', 'priority' => '0.7'],
+        ['loc' => route('ksb-select.index'), 'lastmod' => now(), 'changefreq' => 'monthly', 'priority' => '0.7'],
     ];
 
     $projectPages = Project::query()
@@ -37,6 +37,8 @@ Route::get('/sitemap.xml', function () {
             return [
                 'loc' => route('projects.show', $project),
                 'lastmod' => $project->updated_at ?? $project->created_at ?? now(),
+                'changefreq' => 'monthly',
+                'priority' => '0.8',
             ];
         });
 
@@ -48,7 +50,14 @@ Route::get('/sitemap.xml', function () {
     foreach ($urls as $url) {
         $loc = htmlspecialchars($url['loc'], ENT_XML1);
         $lastmod = ($url['lastmod'] ?? now())->toAtomString();
-        $xml .= '<url><loc>'.$loc.'</loc><lastmod>'.$lastmod.'</lastmod></url>';
+        $changefreq = htmlspecialchars($url['changefreq'] ?? 'monthly', ENT_XML1);
+        $priority = htmlspecialchars($url['priority'] ?? '0.5', ENT_XML1);
+        $xml .= '<url>';
+        $xml .= '<loc>'.$loc.'</loc>';
+        $xml .= '<lastmod>'.$lastmod.'</lastmod>';
+        $xml .= '<changefreq>'.$changefreq.'</changefreq>';
+        $xml .= '<priority>'.$priority.'</priority>';
+        $xml .= '</url>';
     }
 
     $xml .= '</urlset>';

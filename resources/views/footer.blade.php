@@ -3,7 +3,7 @@
         {{-- Contact section --}}
         <div class="site-footer__contact">
             <h3 class="site-footer__heading">Contact</h3>
-            <p class="site-footer__text">If you would like to contact KSB homes, please reach out.</p>
+            <p class="site-footer__text">If you would like to contact KSB Luxury Homes, please reach out.</p>
             <a href="{{ url('/contact') }}" class="btn btn--footer">Enquire Now</a>
         </div>
 

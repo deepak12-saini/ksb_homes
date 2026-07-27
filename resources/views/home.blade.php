@@ -1,7 +1,8 @@
 @extends('layout')
 
-@section('title', 'KSB HOMES Design + Construct – Turning Dreams Into Reality')
-@section('meta_description', "KSB Luxury Homes – high-end design, development and construction for luxury residential projects on Sydney's North Shore.")
+@section('title', $homeContent['seo_title'] ?? 'KSB Luxury Homes | Design, Development & Construction – Sydney North Shore')
+@section('meta_description', $homeContent['seo_description'] ?? 'KSB Luxury Homes designs, develops and constructs premium residential projects across Sydney\'s North Shore. Luxury homes built with local craftsmanship and vision.')
+@section('canonical', route('home'))
 
 @section('content')
     @php

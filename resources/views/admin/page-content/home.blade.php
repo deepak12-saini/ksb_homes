@@ -5,11 +5,23 @@
 @section('content')
     <div class="admin-card admin-card--page-editor">
         @include('admin.page-content._tabs', ['activeTab' => 'home'])
-        <p class="admin-muted" style="margin-top:-0.5rem; margin-bottom:1.25rem;">Edit homepage hero text, about section, and right-side image.</p>
+        <p class="admin-muted" style="margin-top:-0.5rem; margin-bottom:1.25rem;">Edit homepage SEO, hero text, about section, and right-side image.</p>
 
         <form action="{{ route('admin.page-content.home.update') }}" method="post" enctype="multipart/form-data" class="admin-form">
             @csrf
             @method('PUT')
+
+            <h3 class="admin-section-title">SEO</h3>
+            <div class="form-group">
+                <label for="seo_title">Browser title *</label>
+                <input type="text" name="seo_title" id="seo_title" value="{{ old('seo_title', $content['seo_title']) }}" required maxlength="255">
+            </div>
+            <div class="form-group">
+                <label for="seo_description">Meta description *</label>
+                <textarea name="seo_description" id="seo_description" required maxlength="500">{{ old('seo_description', $content['seo_description']) }}</textarea>
+            </div>
+
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
 
             <h3 class="admin-section-title">Home hero</h3>
             <div class="form-group">
