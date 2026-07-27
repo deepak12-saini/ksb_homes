@@ -46,7 +46,11 @@
                 <h3 class="site-footer__heading">Social</h3>
                 <ul class="site-footer__social-list">
                     <li><a href="https://www.instagram.com/ksbhomes_/" target="_blank" rel="noopener noreferrer">@ksbhomes_</a></li>
-                    <li><a href="#" target="_blank" rel="noopener">Facebook</a></li>
+                    <li>
+                        <a href="https://www.facebook.com/profile.php?id=61588726838328" target="_blank" rel="noopener noreferrer">
+                            Facebook
+                        </a>
+                    </li>
                     <li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
                 </ul>
             </div>
