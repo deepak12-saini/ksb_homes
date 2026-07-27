@@ -45,7 +45,7 @@
             <div class="site-footer__col site-footer__col--social">
                 <h3 class="site-footer__heading">Social</h3>
                 <ul class="site-footer__social-list">
-                    <li><a href="https://www.instagram.com/ksbhomes/" target="_blank" rel="noopener noreferrer">@ksbhomes</a></li>
+                    <li><a href="https://www.instagram.com/ksbhomes_/" target="_blank" rel="noopener noreferrer">@ksbhomes_</a></li>
                     <li><a href="#" target="_blank" rel="noopener">Facebook</a></li>
                     <li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
                 </ul>
