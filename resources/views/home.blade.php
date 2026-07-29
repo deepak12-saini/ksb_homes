@@ -137,7 +137,7 @@
                             {{-- Page 1 (2 posts) --}}
                             <div class="instagram-demo__page">
                                 <a
-                                    href="https://www.instagram.com/ksbhomes/"
+                                    href="https://www.instagram.com/ksbhomes_/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="instagram-demo__tile"
@@ -149,7 +149,7 @@
                                     >
                                 </a>
                                 <a
-                                    href="https://www.instagram.com/ksbhomes/"
+                                    href="https://www.instagram.com/ksbhomes_/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="instagram-demo__tile"
@@ -165,7 +165,7 @@
                             {{-- Page 2 (2 posts) --}}
                             <div class="instagram-demo__page">
                                 <a
-                                    href="https://www.instagram.com/ksbhomes/"
+                                    href="https://www.instagram.com/ksbhomes_/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="instagram-demo__tile"
@@ -177,7 +177,7 @@
                                     >
                                 </a>
                                 <a
-                                    href="https://www.instagram.com/ksbhomes/"
+                                    href="https://www.instagram.com/ksbhomes_/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="instagram-demo__tile"
@@ -194,7 +194,7 @@
                 </div>
 
                 <div class="instagram-demo__actions">
-                    <a href="https://www.instagram.com/ksbhomes/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+                    <a href="https://www.instagram.com/ksbhomes_/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
                         View on Instagram
                     </a>
                 </div>

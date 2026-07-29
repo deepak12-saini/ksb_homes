@@ -40,7 +40,7 @@
                     ],
                     'telephone' => '+61421670636',
                     'sameAs' => [
-                        'https://www.instagram.com/ksbhomes/',
+                        'https://www.instagram.com/ksbhomes_/',
                     ],
                 ],
                 [
