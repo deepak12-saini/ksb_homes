@@ -5,7 +5,7 @@
 @section('content')
     <div class="admin-card admin-card--page-editor">
         @include('admin.page-content._tabs', ['activeTab' => 'our-story'])
-        <p class="admin-muted" style="margin-top:-0.5rem; margin-bottom:1.25rem;">Edit Our Story hero, vision, founders, services, and images.</p>
+        <p class="admin-muted" style="margin-top:-0.5rem; margin-bottom:1.25rem;">Edit Our Story hero, vision, founders, stats counters, services, and images.</p>
 
         <form action="{{ route('admin.page-content.our-story.update') }}" method="post" enctype="multipart/form-data" class="admin-form">
             @csrf
@@ -89,6 +89,47 @@
                         <img src="{{ asset('storage/'.$content['founders_image']) }}" alt="Founders preview">
                     </div>
                 @endif
+            </div>
+
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">
+
+            <h3 class="admin-section-title">Stats counters</h3>
+            <p class="admin-muted" style="margin-top:-0.35rem;">Shown below the Founders section. Numbers animate when the visitor scrolls to them.</p>
+            <div class="form-group">
+                <label for="stat_1_value">Stat 1 – number *</label>
+                <input type="number" name="stat_1_value" id="stat_1_value" value="{{ old('stat_1_value', $content['stat_1_value'] ?? 12) }}" min="0" max="99999" required>
+            </div>
+            <div class="form-group">
+                <label for="stat_1_suffix">Stat 1 – suffix (optional, e.g. +)</label>
+                <input type="text" name="stat_1_suffix" id="stat_1_suffix" value="{{ old('stat_1_suffix', $content['stat_1_suffix'] ?? '') }}" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label for="stat_1_label">Stat 1 – label *</label>
+                <input type="text" name="stat_1_label" id="stat_1_label" value="{{ old('stat_1_label', $content['stat_1_label'] ?? 'Years of Experience') }}" required maxlength="120">
+            </div>
+            <div class="form-group">
+                <label for="stat_2_value">Stat 2 – number *</label>
+                <input type="number" name="stat_2_value" id="stat_2_value" value="{{ old('stat_2_value', $content['stat_2_value'] ?? 60) }}" min="0" max="99999" required>
+            </div>
+            <div class="form-group">
+                <label for="stat_2_suffix">Stat 2 – suffix (optional, e.g. +)</label>
+                <input type="text" name="stat_2_suffix" id="stat_2_suffix" value="{{ old('stat_2_suffix', $content['stat_2_suffix'] ?? '+') }}" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label for="stat_2_label">Stat 2 – label *</label>
+                <input type="text" name="stat_2_label" id="stat_2_label" value="{{ old('stat_2_label', $content['stat_2_label'] ?? 'Projects Completed') }}" required maxlength="120">
+            </div>
+            <div class="form-group">
+                <label for="stat_3_value">Stat 3 – number *</label>
+                <input type="number" name="stat_3_value" id="stat_3_value" value="{{ old('stat_3_value', $content['stat_3_value'] ?? 31) }}" min="0" max="99999" required>
+            </div>
+            <div class="form-group">
+                <label for="stat_3_suffix">Stat 3 – suffix (optional)</label>
+                <input type="text" name="stat_3_suffix" id="stat_3_suffix" value="{{ old('stat_3_suffix', $content['stat_3_suffix'] ?? '') }}" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label for="stat_3_label">Stat 3 – label *</label>
+                <input type="text" name="stat_3_label" id="stat_3_label" value="{{ old('stat_3_label', $content['stat_3_label'] ?? 'Awards') }}" required maxlength="120">
             </div>
 
             <hr style="border:none; border-top:1px solid #e2e8f0; margin:1.5rem 0;">

@@ -102,6 +102,46 @@
         </div>
     </section>
 
+    @php
+        $storyStats = [
+            [
+                'value' => (int) ($storyContent['stat_1_value'] ?? 12),
+                'suffix' => (string) ($storyContent['stat_1_suffix'] ?? ''),
+                'label' => $storyContent['stat_1_label'] ?? 'Years of Experience',
+            ],
+            [
+                'value' => (int) ($storyContent['stat_2_value'] ?? 60),
+                'suffix' => (string) ($storyContent['stat_2_suffix'] ?? '+'),
+                'label' => $storyContent['stat_2_label'] ?? 'Projects Completed',
+            ],
+            [
+                'value' => (int) ($storyContent['stat_3_value'] ?? 31),
+                'suffix' => (string) ($storyContent['stat_3_suffix'] ?? ''),
+                'label' => $storyContent['stat_3_label'] ?? 'Awards',
+            ],
+        ];
+    @endphp
+
+    {{-- Stats: scroll-triggered counters below founders --}}
+    <section class="story-stats" aria-label="Company achievements" data-story-stats>
+        <div class="section__inner">
+            <div class="story-stats__grid">
+                @foreach ($storyStats as $stat)
+                    <div class="story-stats__item">
+                        <p class="story-stats__value" aria-label="{{ $stat['value'].$stat['suffix'].' '.$stat['label'] }}">
+                            <span
+                                class="story-stats__number"
+                                data-count-to="{{ $stat['value'] }}"
+                                data-count-suffix="{{ $stat['suffix'] }}"
+                            >0{{ $stat['suffix'] }}</span>
+                        </p>
+                        <p class="story-stats__label">{{ $stat['label'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     {{-- Services section (like reference layout) --}}
     <section class="section section--about story-content" aria-labelledby="services-heading">
         <div class="section__inner">
@@ -128,3 +168,68 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    var root = document.querySelector('[data-story-stats]');
+    if (!root) return;
+
+    var numbers = root.querySelectorAll('[data-count-to]');
+    if (!numbers.length) return;
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setFinal(el) {
+        var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+        var suffix = el.getAttribute('data-count-suffix') || '';
+        el.textContent = String(target) + suffix;
+    }
+
+    function animate(el) {
+        var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+        var suffix = el.getAttribute('data-count-suffix') || '';
+        if (reducedMotion || target <= 0) {
+            setFinal(el);
+            return;
+        }
+
+        var duration = Math.min(1800, 900 + target * 12);
+        var start = null;
+
+        function frame(ts) {
+            if (start === null) start = ts;
+            var progress = Math.min(1, (ts - start) / duration);
+            // Ease-out cubic
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = Math.round(target * eased);
+            el.textContent = String(current) + suffix;
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                setFinal(el);
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+        numbers.forEach(setFinal);
+        return;
+    }
+
+    var played = false;
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting || played) return;
+            played = true;
+            numbers.forEach(animate);
+            observer.disconnect();
+        });
+    }, { threshold: 0.35 });
+
+    observer.observe(root);
+})();
+</script>
+@endpush
