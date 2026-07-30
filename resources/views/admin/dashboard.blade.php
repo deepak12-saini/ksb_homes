@@ -4,23 +4,39 @@
 
 @section('content')
     <div class="admin-card">
-        <h2 style="margin-top:0;">Overview</h2>
-        <p class="admin-muted">Use the sidebar to manage projects and page content. Stat cards open the related admin area.</p>
+        <div class="admin-card__head">
+            <div>
+                <h2>Overview</h2>
+                <p class="admin-muted" style="margin: 0.2rem 0 0;">A snapshot of your site. Select a card to open that area.</p>
+            </div>
+        </div>
 
         <div class="admin-stat-grid">
             <a href="{{ route('admin.projects.index') }}" class="admin-stat admin-stat--link">
+                <span class="admin-stat__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-5h6v5"/></svg>
+                </span>
                 <p class="admin-stat__value">{{ $projectsTotal }}</p>
                 <p class="admin-stat__label">Projects in CMS</p>
             </a>
             <a href="{{ route('admin.projects.index') }}" class="admin-stat admin-stat--link">
+                <span class="admin-stat__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.6 6.4.8-4.7 4.3 1.2 6.3L12 17l-5.5 3 1.2-6.3L3 9.4l6.4-.8z"/></svg>
+                </span>
                 <p class="admin-stat__value">{{ $projectsFeaturedHome }}</p>
                 <p class="admin-stat__label">Featured on home</p>
             </a>
             <a href="{{ route('admin.newsletter-subscribers.index') }}" class="admin-stat admin-stat--link">
+                <span class="admin-stat__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+                </span>
                 <p class="admin-stat__value">{{ $newsletterTotal }}</p>
                 <p class="admin-stat__label">Newsletter subscribers</p>
             </a>
             <a href="{{ route('admin.contact-enquiries.index') }}" class="admin-stat admin-stat--link">
+                <span class="admin-stat__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                </span>
                 <p class="admin-stat__value">{{ $contactEnquiriesTotal }}</p>
                 <p class="admin-stat__label">Contact form leads</p>
             </a>
@@ -28,37 +44,43 @@
     </div>
 
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem;">
-            <h2 style="margin:0;">Recent contact form leads</h2>
+        <div class="admin-card__head">
+            <div>
+                <h2>Recent contact form leads</h2>
+                <p class="admin-muted" style="margin: 0.2rem 0 0;">Latest submissions from the contact / enquire page.</p>
+            </div>
             <a href="{{ route('admin.contact-enquiries.index') }}" class="admin-btn admin-btn--secondary">View all</a>
         </div>
-        <p class="admin-muted">Submissions from the main Contact / Enquire page (stored in the database).</p>
 
         @if ($recentContactEnquiries->isEmpty())
-            <p class="admin-muted" style="margin-bottom:0;">No contact leads yet.</p>
+            <div class="admin-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                <h3>No contact leads yet</h3>
+                <p>New enquiries from the website will appear here.</p>
+            </div>
         @else
             <div class="admin-table-wrap">
                 <table class="admin-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Date</th>
+                            <th>Received</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Looking to do</th>
-                            <th></th>
+                            <th class="admin-table__actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($recentContactEnquiries as $lead)
                             <tr>
-                                <td>{{ $lead->id }}</td>
-                                <td>{{ $lead->created_at?->format('M j, Y g:i a') }}</td>
-                                <td>{{ $lead->full_name }}</td>
+                                <td class="admin-table__id">{{ $lead->id }}</td>
+                                <td>{{ $lead->created_at?->format('j M Y, g:i a') }}</td>
+                                <td class="admin-table__strong">{{ $lead->full_name }}</td>
                                 <td><a href="mailto:{{ $lead->email }}">{{ $lead->email }}</a></td>
                                 <td>{{ \Illuminate\Support\Str::limit(implode(', ', $lead->looking_to_do ?? []), 72) }}</td>
-                                <td>
-                                    <a href="{{ route('admin.contact-enquiries.show', $lead) }}" class="admin-btn admin-btn--secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8125rem;">Open</a>
+                                <td class="admin-table__actions">
+                                    <a href="{{ route('admin.contact-enquiries.show', $lead) }}" class="admin-btn admin-btn--secondary admin-btn--sm">Open</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -69,30 +91,36 @@
     </div>
 
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem;">
-            <h2 style="margin:0;">Recent newsletter sign-ups</h2>
+        <div class="admin-card__head">
+            <div>
+                <h2>Recent newsletter sign-ups</h2>
+                <p class="admin-muted" style="margin: 0.2rem 0 0;">Latest emails from the site newsletter form.</p>
+            </div>
             <a href="{{ route('admin.newsletter-subscribers.index') }}" class="admin-btn admin-btn--secondary">View all</a>
         </div>
-        <p class="admin-muted">Latest emails from the site newsletter form.</p>
 
         @if ($recentNewsletterSubscribers->isEmpty())
-            <p class="admin-muted" style="margin-bottom:0;">No subscribers yet.</p>
+            <div class="admin-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/></svg>
+                <h3>No subscribers yet</h3>
+                <p>Signups from the newsletter form will appear here.</p>
+            </div>
         @else
             <div class="admin-table-wrap">
                 <table class="admin-table">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Date</th>
                             <th>Email</th>
+                            <th>Subscribed</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($recentNewsletterSubscribers as $sub)
                             <tr>
-                                <td>{{ $sub->id }}</td>
-                                <td>{{ $sub->created_at?->format('M j, Y g:i a') }}</td>
-                                <td><a href="mailto:{{ $sub->email }}">{{ $sub->email }}</a></td>
+                                <td class="admin-table__id">{{ $sub->id }}</td>
+                                <td class="admin-table__strong"><a href="mailto:{{ $sub->email }}">{{ $sub->email }}</a></td>
+                                <td>{{ $sub->created_at?->format('j M Y, g:i a') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

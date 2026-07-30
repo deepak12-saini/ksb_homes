@@ -4,11 +4,13 @@
 
 @section('content')
     <div class="admin-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
-            <h2 style="margin:0;">Contact lead #{{ $enquiry->id }}</h2>
+        <div class="admin-card__head">
+            <div>
+                <h2>Contact lead #{{ $enquiry->id }}</h2>
+                <p class="admin-muted" style="margin: 0.2rem 0 0;">Received {{ $enquiry->created_at?->format('l, j F Y \a\t g:i a') }}.</p>
+            </div>
             <a href="{{ route('admin.contact-enquiries.index') }}" class="admin-btn admin-btn--secondary">Back to list</a>
         </div>
-        <p class="admin-muted" style="margin-top:0;">Received {{ $enquiry->created_at?->format('l, j F Y \a\t g:i a') }}.</p>
 
         @if ($enquiry->hasAttachment())
             <p style="margin-bottom: 1.25rem;">
@@ -21,9 +23,10 @@
             <p class="admin-muted" style="margin-bottom: 1.25rem;"><strong>Plans / drawings:</strong> none uploaded, or file no longer on server.</p>
         @endif
 
-        <table class="admin-table">
+        <div class="admin-table-wrap">
+        <table class="admin-table admin-table--detail">
             <tbody>
-                <tr><th style="width: 220px;">Full name</th><td>{{ $enquiry->full_name }}</td></tr>
+                <tr><th>Full name</th><td>{{ $enquiry->full_name }}</td></tr>
                 <tr><th>Phone</th><td>{{ $enquiry->phone }}</td></tr>
                 <tr><th>Email</th><td><a href="mailto:{{ $enquiry->email }}">{{ $enquiry->email }}</a></td></tr>
                 <tr><th>Suburb / postcode</th><td>{{ $enquiry->suburb_postcode }}</td></tr>
@@ -46,5 +49,6 @@
                 @endif
             </tbody>
         </table>
+        </div>
     </div>
 @endsection

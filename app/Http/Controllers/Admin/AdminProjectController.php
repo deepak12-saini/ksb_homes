@@ -12,10 +12,31 @@ use Illuminate\View\View;
 
 class AdminProjectController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $projects = Project::with('category')->orderBy('sort_order')->orderBy('name')->get();
-        return view('admin.projects.index', compact('projects'));
+        $search = trim((string) $request->query('q', ''));
+        $categoryId = $request->query('category');
+
+        $projects = Project::with('category')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($inner) use ($search) {
+                    $inner->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('slug', 'like', '%'.$search.'%')
+                        ->orWhere('location', 'like', '%'.$search.'%');
+                });
+            })
+            ->when(is_numeric($categoryId), fn ($query) => $query->where('project_category_id', (int) $categoryId))
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.projects.index', [
+            'projects' => $projects,
+            'categories' => ProjectCategory::orderBy('sort_order')->get(),
+            'search' => $search,
+            'categoryId' => is_numeric($categoryId) ? (int) $categoryId : null,
+        ]);
     }
 
     public function create(): View

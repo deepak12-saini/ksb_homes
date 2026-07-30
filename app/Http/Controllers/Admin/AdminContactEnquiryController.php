@@ -4,18 +4,34 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactEnquiry;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class AdminContactEnquiryController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $enquiries = ContactEnquiry::query()
-            ->latest()
-            ->paginate(25);
+        $search = trim((string) $request->query('q', ''));
+        $perPage = in_array((int) $request->query('per_page'), [15, 25, 50, 100], true)
+            ? (int) $request->query('per_page')
+            : 15;
 
-        return view('admin.contact-enquiries.index', compact('enquiries'));
+        $enquiries = ContactEnquiry::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($inner) use ($search) {
+                    $inner->where('full_name', 'like', '%'.$search.'%')
+                        ->orWhere('email', 'like', '%'.$search.'%')
+                        ->orWhere('phone', 'like', '%'.$search.'%')
+                        ->orWhere('suburb_postcode', 'like', '%'.$search.'%')
+                        ->orWhere('project_type', 'like', '%'.$search.'%');
+                });
+            })
+            ->latest()
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view('admin.contact-enquiries.index', compact('enquiries', 'search', 'perPage'));
     }
 
     public function show(ContactEnquiry $contact_enquiry): View
