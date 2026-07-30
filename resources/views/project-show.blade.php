@@ -47,9 +47,6 @@
 
 @section('content')
     <article class="project-detail" aria-labelledby="project-heading">
-        <div class="project-detail__nav">
-            <a href="{{ route('projects.index') }}" class="project-detail__back">Projects</a>
-        </div>
         <div class="project-detail__grid">
             <div class="project-detail__media" @if ($galleryUrls === []) aria-hidden="true" @endif>
                 @if ($galleryUrls === [])
