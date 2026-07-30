@@ -31,6 +31,8 @@ class ProjectController extends Controller
 
     public function show(Project $project): View
     {
+        $project->load('images');
+
         $ids = Project::query()
             ->orderBy('sort_order')
             ->orderBy('name')

@@ -25,16 +25,22 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="image">Image</label>
+                <label for="image">Main image</label>
                 <input type="file" name="image" id="image" accept="image/*">
+                <p class="admin-muted" style="margin:0.4rem 0 0;">Replace the card / first detail image. Leave empty to keep the current one.</p>
                 @if ($project->image)
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">Current: <img src="{{ $project->public_image_url }}" alt="" style="max-height: 60px; vertical-align: middle;"></p>
+                    <div class="admin-thumb-preview" style="margin-top:0.65rem;">
+                        <img src="{{ $project->public_image_url }}" alt="Current main image for {{ $project->name }}">
+                    </div>
                 @endif
             </div>
-            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Project details (public page)</h3>
+
+            @include('admin.projects._gallery_manager', ['existingImages' => $project->images])
+
+            <h3 class="admin-section-title">Project details (public page)</h3>
             <div class="form-group">
                 <label for="architecture">Architecture</label>
-                <input type="text" name="architecture" id="architecture" value="{{ old('architecture', $project->architecture) }}" placeholder="e.g. by KSB homes">
+                <input type="text" name="architecture" id="architecture" value="{{ old('architecture', $project->architecture) }}" placeholder="e.g. by KSB Luxury Homes">
             </div>
             <div class="form-group">
                 <label for="location">Location</label>

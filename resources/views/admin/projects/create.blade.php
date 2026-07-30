@@ -24,13 +24,17 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="image">Image</label>
+                <label for="image">Main image</label>
                 <input type="file" name="image" id="image" accept="image/*">
+                <p class="admin-muted" style="margin:0.4rem 0 0;">Used on home / project cards and as the first image on the detail page.</p>
             </div>
-            <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Project details (public page)</h3>
+
+            @include('admin.projects._gallery_manager', ['existingImages' => collect()])
+
+            <h3 class="admin-section-title">Project details (public page)</h3>
             <div class="form-group">
                 <label for="architecture">Architecture</label>
-                <input type="text" name="architecture" id="architecture" value="{{ old('architecture') }}" placeholder="e.g. by KSB homes">
+                <input type="text" name="architecture" id="architecture" value="{{ old('architecture') }}" placeholder="e.g. by KSB Luxury Homes">
             </div>
             <div class="form-group">
                 <label for="location">Location</label>
