@@ -49,6 +49,10 @@
                 <a href="tel:{{ $contactContent['phone_tel'] }}" class="contact-details-bar__value contact-details-bar__link">{{ $contactContent['phone_display'] }}</a>
             </div>
             <div class="contact-details-bar__item">
+                <span class="contact-details-bar__label">Email</span>
+                <a href="mailto:{{ $contactContent['email'] ?? 'info@ksbhomes.com.au' }}" class="contact-details-bar__value contact-details-bar__link">{{ $contactContent['email'] ?? 'info@ksbhomes.com.au' }}</a>
+            </div>
+            <div class="contact-details-bar__item">
                 <span class="contact-details-bar__label">Instagram</span>
                 <a href="{{ $contactContent['instagram_url'] }}" class="contact-details-bar__value contact-details-bar__link" target="_blank" rel="noopener noreferrer">{{ $contactContent['instagram_display'] }}</a>
             </div>
@@ -69,6 +73,11 @@
                 <div class="contact-info__block">
                     <h2 class="contact-info__heading">Phone</h2>
                     <p class="contact-info__text"><a href="tel:{{ $contactContent['phone_tel'] }}">{{ $contactContent['phone_display'] }}</a></p>
+                </div>
+
+                <div class="contact-info__block">
+                    <h2 class="contact-info__heading">Email</h2>
+                    <p class="contact-info__text"><a href="mailto:{{ $contactContent['email'] ?? 'info@ksbhomes.com.au' }}">{{ $contactContent['email'] ?? 'info@ksbhomes.com.au' }}</a></p>
                 </div>
 
                 <div class="contact-info__block">

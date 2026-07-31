@@ -84,6 +84,7 @@ class PageContent extends Model
             'address_text' => 'Wahroonga Sydney NSW',
             'phone_display' => '0421670636',
             'phone_tel' => '+61421670636',
+            'email' => 'info@ksbhomes.com.au',
             'instagram_url' => 'https://www.instagram.com/ksbhomes_/',
             'instagram_display' => '@ksbhomes_',
             'section_label' => 'Contact',

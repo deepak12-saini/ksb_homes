@@ -55,6 +55,10 @@
                 <input type="text" name="phone_tel" id="phone_tel" value="{{ old('phone_tel', $content['phone_tel']) }}" required>
             </div>
             <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" name="email" id="email" value="{{ old('email', $content['email'] ?? 'info@ksbhomes.com.au') }}" required>
+            </div>
+            <div class="form-group">
                 <label for="instagram_url">Instagram URL *</label>
                 <input type="url" name="instagram_url" id="instagram_url" value="{{ old('instagram_url', $content['instagram_url']) }}" required>
             </div>

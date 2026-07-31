@@ -40,6 +40,10 @@
                         <span class="site-footer__office-label">Phone</span>
                         <a href="tel:+61421670636" class="site-footer__office-value site-footer__office-link">0421670636</a>
                     </p>
+                    <p class="site-footer__office-line">
+                        <span class="site-footer__office-label">Email</span>
+                        <a href="mailto:info@ksbhomes.com.au" class="site-footer__office-value site-footer__office-link">info@ksbhomes.com.au</a>
+                    </p>
                 </div>
             </div>
             <div class="site-footer__col site-footer__col--social">
