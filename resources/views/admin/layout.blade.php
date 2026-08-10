@@ -1028,21 +1028,35 @@
                         Page Content
                     </a>
                 </li>
-                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.contact-enquiries.*') ? 'admin-sidebar__nav-item--active' : '' }}">
-                    <a href="{{ route('admin.contact-enquiries.index') }}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg>
-                        Contact leads
-                    </a>
-                </li>
-                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.newsletter-subscribers.*') ? 'admin-sidebar__nav-item--active' : '' }}">
-                    <a href="{{ route('admin.newsletter-subscribers.index') }}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
-                        Newsletter
-                    </a>
-                </li>
+                @if (($adminUser ?? null)?->isAdmin())
+                    <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.contact-enquiries.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                        <a href="{{ route('admin.contact-enquiries.index') }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                            Contact leads
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.newsletter-subscribers.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                        <a href="{{ route('admin.newsletter-subscribers.index') }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+                            Newsletter
+                        </a>
+                    </li>
+                    <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.users.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                        <a href="{{ route('admin.users.index') }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Manage users
+                        </a>
+                    </li>
+                @endif
             </ul>
 
             <div class="admin-sidebar__footer">
+                @if (($adminUser ?? null))
+                    <div style="margin-bottom:0.45rem; color:#94a3b8;">
+                        {{ $adminUser->name }}
+                        <span style="opacity:0.75;">· {{ $adminUser->isAdmin() ? 'Admin' : 'Marketing' }}</span>
+                    </div>
+                @endif
                 &copy; {{ date('Y') }} KSB Luxury Homes
             </div>
         </aside>

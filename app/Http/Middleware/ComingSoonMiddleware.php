@@ -23,6 +23,11 @@ class ComingSoonMiddleware
             return $next($request);
         }
 
+        // Allow the CMS so admins/marketing can update content while the public site is locked.
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return $next($request);
+        }
+
         return response()
             ->view('coming-soon', [], Response::HTTP_OK)
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate');

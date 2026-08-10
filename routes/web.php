@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminNewsletterSubscriberController;
 use App\Http\Controllers\Admin\AdminPageContentController;
 use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KsbSelectController;
@@ -98,9 +99,13 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/page-content/contact', [AdminPageContentController::class, 'editContact'])->name('page-content.contact.edit');
     Route::put('/page-content/contact', [AdminPageContentController::class, 'updateContact'])->name('page-content.contact.update');
 
-    Route::get('/contact-enquiries', [AdminContactEnquiryController::class, 'index'])->name('contact-enquiries.index');
-    Route::get('/contact-enquiries/{contact_enquiry}', [AdminContactEnquiryController::class, 'show'])->name('contact-enquiries.show');
-    Route::get('/contact-enquiries/{contact_enquiry}/attachment', [AdminContactEnquiryController::class, 'downloadAttachment'])->name('contact-enquiries.attachment');
+    Route::middleware('admin.role:admin')->group(function () {
+        Route::get('/contact-enquiries', [AdminContactEnquiryController::class, 'index'])->name('contact-enquiries.index');
+        Route::get('/contact-enquiries/{contact_enquiry}', [AdminContactEnquiryController::class, 'show'])->name('contact-enquiries.show');
+        Route::get('/contact-enquiries/{contact_enquiry}/attachment', [AdminContactEnquiryController::class, 'downloadAttachment'])->name('contact-enquiries.attachment');
 
-    Route::get('/newsletter-subscribers', [AdminNewsletterSubscriberController::class, 'index'])->name('newsletter-subscribers.index');
+        Route::get('/newsletter-subscribers', [AdminNewsletterSubscriberController::class, 'index'])->name('newsletter-subscribers.index');
+
+        Route::resource('users', AdminUserController::class)->except(['show']);
+    });
 });
