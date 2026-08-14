@@ -42,6 +42,7 @@
                     'email' => 'info@ksbhomes.com.au',
                     'sameAs' => [
                         'https://www.instagram.com/ksbhomes_/',
+                        'https://www.facebook.com/profile.php?id=61592927248037',
                     ],
                 ],
                 [

@@ -14,6 +14,21 @@
                 : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80');
         /** First two “Show on home” projects: large side-by-side images, names below (no badges). */
         $spotlight = $featuredProjects->take(2);
+        $instagramPosts = $instagramPosts ?? collect();
+        $instagramProfileUrl = $instagramProfileUrl ?? 'https://www.instagram.com/ksbhomes_/';
+        $instagramLive = $instagramPosts->isNotEmpty();
+        $instagramPages = $instagramLive
+            ? $instagramPosts->chunk(2)
+            : collect([
+                [
+                    ['image' => 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 1'],
+                    ['image' => 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 2'],
+                ],
+                [
+                    ['image' => 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 3'],
+                    ['image' => 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 4'],
+                ],
+            ]);
     @endphp
 
     {{-- Hero section: full-bleed video with overlaid text (reference: graya.com.au) --}}
@@ -124,77 +139,40 @@
         </div>
     </section>
 
-    {{-- Instagram demo (not live yet). Rotating preview of Insta posts. --}}
+    {{-- Instagram: live Graph API posts when configured, otherwise demo tiles. --}}
     <section id="instagram" class="section section--instagram-demo" aria-labelledby="instagram-heading">
         <div class="section__inner">
             <p class="section__label">Instagram</p>
             <h2 id="instagram-heading" class="section__title">KSB Luxury Homes</h2>
 
             <div class="instagram-demo">
-                <div class="instagram-demo__carousel" aria-label="Instagram demo posts">
+                <div class="instagram-demo__carousel" aria-label="{{ $instagramLive ? 'Latest Instagram posts' : 'Instagram demo posts' }}">
                     <div class="instagram-demo__viewport">
                         <div class="instagram-demo__track">
-                            {{-- Page 1 (2 posts) --}}
-                            <div class="instagram-demo__page">
-                                <a
-                                    href="https://www.instagram.com/ksbhomes_/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="instagram-demo__tile"
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=1200&h=800&fit=crop"
-                                        alt="Instagram demo post 1"
-                                        loading="lazy"
-                                    >
-                                </a>
-                                <a
-                                    href="https://www.instagram.com/ksbhomes_/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="instagram-demo__tile"
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&h=800&fit=crop"
-                                        alt="Instagram demo post 2"
-                                        loading="lazy"
-                                    >
-                                </a>
-                            </div>
-
-                            {{-- Page 2 (2 posts) --}}
-                            <div class="instagram-demo__page">
-                                <a
-                                    href="https://www.instagram.com/ksbhomes_/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="instagram-demo__tile"
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200&h=800&fit=crop"
-                                        alt="Instagram demo post 3"
-                                        loading="lazy"
-                                    >
-                                </a>
-                                <a
-                                    href="https://www.instagram.com/ksbhomes_/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="instagram-demo__tile"
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&h=800&fit=crop"
-                                        alt="Instagram demo post 4"
-                                        loading="lazy"
-                                    >
-                                </a>
-                            </div>
+                            @foreach ($instagramPages as $page)
+                                <div class="instagram-demo__page">
+                                    @foreach ($page as $post)
+                                        <a
+                                            href="{{ $post['permalink'] }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="instagram-demo__tile"
+                                        >
+                                            <img
+                                                src="{{ $post['image'] }}"
+                                                alt="{{ \Illuminate\Support\Str::limit($post['caption'], 80) }}"
+                                                loading="lazy"
+                                            >
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
 
                 <div class="instagram-demo__actions">
-                    <a href="https://www.instagram.com/ksbhomes_/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+                    <a href="{{ $instagramProfileUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
                         View on Instagram
                     </a>
                 </div>

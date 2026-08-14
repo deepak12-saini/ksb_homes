@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PageContent;
 use App\Models\Project;
+use App\Services\InstagramFeedService;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -32,6 +33,8 @@ class HomeController extends Controller
         return view('home', [
             'featuredProjects' => $featuredProjects,
             'homeContent' => PageContent::getPageValues('home', $homeContentDefaults),
+            'instagramPosts' => app(InstagramFeedService::class)->latestPosts(8),
+            'instagramProfileUrl' => config('services.instagram.profile_url', 'https://www.instagram.com/ksbhomes_/'),
         ]);
     }
 }

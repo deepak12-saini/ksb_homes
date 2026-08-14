@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'instagram' => [
+        'access_token' => env('INSTAGRAM_ACCESS_TOKEN'),
+        'business_account_id' => env('INSTAGRAM_BUSINESS_ACCOUNT_ID'),
+        'facebook_page_id' => env('FACEBOOK_PAGE_ID', '61592927248037'),
+        'profile_url' => env('INSTAGRAM_PROFILE_URL', 'https://www.instagram.com/ksbhomes_/'),
+    ],
+
 ];
