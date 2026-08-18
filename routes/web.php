@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminContactEnquiryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminInstagramPostController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminNewsletterSubscriberController;
 use App\Http\Controllers\Admin\AdminPageContentController;
@@ -92,6 +93,7 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn () => redirect()->route('admin.dashboard'));
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('projects', AdminProjectController::class)->except(['show']);
+    Route::resource('instagram-posts', AdminInstagramPostController::class)->except(['show']);
     Route::get('/page-content/home', [AdminPageContentController::class, 'editHome'])->name('page-content.home.edit');
     Route::put('/page-content/home', [AdminPageContentController::class, 'updateHome'])->name('page-content.home.update');
     Route::get('/page-content/our-story', [AdminPageContentController::class, 'editOurStory'])->name('page-content.our-story.edit');

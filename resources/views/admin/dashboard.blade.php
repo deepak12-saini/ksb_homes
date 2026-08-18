@@ -39,6 +39,13 @@
                 <p class="admin-stat__value">3</p>
                 <p class="admin-stat__label">Editable pages</p>
             </a>
+            <a href="{{ route('admin.instagram-posts.index') }}" class="admin-stat admin-stat--link">
+                <span class="admin-stat__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.2"/><path d="M16.5 7.5h.01"/></svg>
+                </span>
+                <p class="admin-stat__value">{{ $instagramPostsTotal }}</p>
+                <p class="admin-stat__label">Instagram posts</p>
+            </a>
             @if ($isAdmin)
                 <a href="{{ route('admin.newsletter-subscribers.index') }}" class="admin-stat admin-stat--link">
                     <span class="admin-stat__icon">
@@ -154,6 +161,7 @@
             </div>
             <div class="admin-btn-group" style="flex-wrap:wrap;">
                 <a href="{{ route('admin.projects.index') }}" class="admin-btn">Manage projects</a>
+                <a href="{{ route('admin.instagram-posts.index') }}" class="admin-btn admin-btn--secondary">Manage Instagram</a>
                 <a href="{{ route('admin.page-content.home.edit') }}" class="admin-btn admin-btn--secondary">Edit Home</a>
                 <a href="{{ route('admin.page-content.our-story.edit') }}" class="admin-btn admin-btn--secondary">Edit Our Story</a>
                 <a href="{{ route('admin.page-content.contact.edit') }}" class="admin-btn admin-btn--secondary">Edit Contact</a>

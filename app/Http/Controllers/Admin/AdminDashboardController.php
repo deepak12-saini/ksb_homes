@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactEnquiry;
+use App\Models\InstagramPost;
 use App\Models\NewsletterSubscriber;
 use App\Models\Project;
 use App\Support\AdminAuth;
@@ -14,12 +15,13 @@ class AdminDashboardController extends Controller
     public function index(): View
     {
         $user = AdminAuth::user();
-        $isAdmin = $user?->isAdmin() ?? false;
+        $isAdmin = $user ? $user->isAdmin() : false;
 
         $data = [
             'isAdmin' => $isAdmin,
             'projectsTotal' => Project::query()->count(),
             'projectsFeaturedHome' => Project::query()->where('featured_on_home', true)->count(),
+            'instagramPostsTotal' => InstagramPost::query()->count(),
         ];
 
         if ($isAdmin) {

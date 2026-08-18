@@ -1022,6 +1022,12 @@
                         Manage Projects
                     </a>
                 </li>
+                <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.instagram-posts.*') ? 'admin-sidebar__nav-item--active' : '' }}">
+                    <a href="{{ route('admin.instagram-posts.index') }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.2"/><path d="M16.5 7.5h.01"/></svg>
+                        Instagram Posts
+                    </a>
+                </li>
                 <li class="admin-sidebar__nav-item {{ request()->routeIs('admin.page-content.*') ? 'admin-sidebar__nav-item--active' : '' }}">
                     <a href="{{ route('admin.page-content.home.edit') }}">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 20V9"/></svg>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InstagramPost;
 use App\Models\PageContent;
 use App\Models\Project;
 use App\Services\InstagramFeedService;
@@ -30,10 +31,27 @@ class HomeController extends Controller
             'about_image' => null,
         ];
 
+        $manualInstagramPosts = InstagramPost::query()
+            ->active()
+            ->orderBy('sort_order')
+            ->orderByDesc('published_at')
+            ->orderByDesc('id')
+            ->limit(8)
+            ->get()
+            ->map(fn (InstagramPost $post): array => [
+                'id' => 'manual-'.$post->id,
+                'image' => $post->imageUrl(),
+                'permalink' => $post->instagram_url,
+                'caption' => $post->caption ?: 'KSB Luxury Homes on Instagram',
+                'media_type' => 'IMAGE',
+            ]);
+
         return view('home', [
             'featuredProjects' => $featuredProjects,
             'homeContent' => PageContent::getPageValues('home', $homeContentDefaults),
-            'instagramPosts' => app(InstagramFeedService::class)->latestPosts(8),
+            'instagramPosts' => $manualInstagramPosts->isNotEmpty()
+                ? $manualInstagramPosts
+                : app(InstagramFeedService::class)->latestPosts(8),
             'instagramProfileUrl' => config('services.instagram.profile_url', 'https://www.instagram.com/ksbhomes_/'),
         ]);
     }
