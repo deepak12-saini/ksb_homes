@@ -55,7 +55,9 @@
                             Facebook
                         </a>
                     </li>
+                    {{-- LinkedIn: no account yet
                     <li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li>
+                    --}}
                 </ul>
             </div>
             <div class="site-footer__col site-footer__col--access">
