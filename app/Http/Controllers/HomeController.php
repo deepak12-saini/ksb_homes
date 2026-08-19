@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         $instagramFeedPosts = InstagramPost::query()
             ->active()
-            ->orderBy('sort_order')
+            ->orderByDesc('sort_order')
             ->orderByDesc('id')
             ->limit(self::INSTAGRAM_MAX_VISIBLE)
             ->get();
