@@ -37,8 +37,10 @@
                         <span class="site-footer__office-value">Wahroonga Sydney NSW</span>
                     </p>
                     <p class="site-footer__office-line">
+                        {{-- Phone hidden per client request
                         <span class="site-footer__office-label">Phone</span>
                         <a href="tel:+61421670636" class="site-footer__office-value site-footer__office-link">0421670636</a>
+                        --}}
                     </p>
                     <p class="site-footer__office-line">
                         <span class="site-footer__office-label">Email</span>

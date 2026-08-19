@@ -45,8 +45,10 @@
                 <span class="contact-details-bar__value">{{ $contactContent['address_text'] }}</span>
             </div>
             <div class="contact-details-bar__item">
+                {{-- Phone hidden per client request
                 <span class="contact-details-bar__label">Phone</span>
                 <a href="tel:{{ $contactContent['phone_tel'] }}" class="contact-details-bar__value contact-details-bar__link">{{ $contactContent['phone_display'] }}</a>
+                --}}
             </div>
             <div class="contact-details-bar__item">
                 <span class="contact-details-bar__label">Email</span>
@@ -71,8 +73,10 @@
                 </div>
 
                 <div class="contact-info__block">
+                    {{-- Phone hidden per client request
                     <h2 class="contact-info__heading">Phone</h2>
                     <p class="contact-info__text"><a href="tel:{{ $contactContent['phone_tel'] }}">{{ $contactContent['phone_display'] }}</a></p>
+                    --}}
                 </div>
 
                 <div class="contact-info__block">

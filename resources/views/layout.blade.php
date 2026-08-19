@@ -38,7 +38,8 @@
                         'addressRegion' => 'NSW',
                         'addressCountry' => 'AU',
                     ],
-                    'telephone' => '+61421670636',
+                    // 'telephone' hidden per client request
+                    // 'telephone' => '+61421670636',
                     'email' => 'info@ksbhomes.com.au',
                     'sameAs' => [
                         'https://www.instagram.com/ksbhomes_/',
