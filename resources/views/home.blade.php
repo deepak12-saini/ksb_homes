@@ -14,21 +14,44 @@
                 : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&h=560&fit=crop&q=80');
         /** First two “Show on home” projects: large side-by-side images, names below (no badges). */
         $spotlight = $featuredProjects->take(2);
-        $instagramPosts = $instagramPosts ?? collect();
+        $instagramFeedPosts = $instagramFeedPosts ?? collect();
+        $instagramFallbackPosts = $instagramFallbackPosts ?? collect();
         $instagramProfileUrl = $instagramProfileUrl ?? 'https://www.instagram.com/ksbhomes_/';
-        $instagramLive = $instagramPosts->isNotEmpty();
-        $instagramPages = $instagramLive
-            ? $instagramPosts->chunk(2)
-            : collect([
-                [
-                    ['image' => 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 1'],
-                    ['image' => 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 2'],
-                ],
-                [
-                    ['image' => 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 3'],
-                    ['image' => 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'caption' => 'Instagram demo post 4'],
-                ],
+        $instagramHandle = $instagramHandle ?? '@ksbhomes_';
+        $instagramInitialVisible = $instagramInitialVisible ?? 12;
+        $instagramMaxVisible = $instagramMaxVisible ?? 30;
+
+        $instagramGridPosts = $instagramFeedPosts->isNotEmpty()
+            ? $instagramFeedPosts->map(fn ($post) => [
+                'image' => $post->displayImageUrl(),
+                'permalink' => $post->instagram_url,
+                'alt' => $post->admin_note ?: 'KSB Luxury Homes on Instagram',
+            ])
+            : $instagramFallbackPosts->map(fn ($post) => [
+                'image' => $post['image'],
+                'permalink' => $post['permalink'],
+                'alt' => $post['caption'] ?? 'KSB Luxury Homes on Instagram',
             ]);
+
+        if ($instagramGridPosts->isEmpty()) {
+            $instagramGridPosts = collect([
+                ['image' => 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 1'],
+                ['image' => 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 2'],
+                ['image' => 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 3'],
+                ['image' => 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 4'],
+                ['image' => 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 5'],
+                ['image' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 6'],
+                ['image' => 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 7'],
+                ['image' => 'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 8'],
+                ['image' => 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 9'],
+                ['image' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 10'],
+                ['image' => 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 11'],
+                ['image' => 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cd7e?w=800&h=800&fit=crop', 'permalink' => $instagramProfileUrl, 'alt' => 'Instagram demo post 12'],
+            ]);
+        }
+
+        $instagramGridPosts = $instagramGridPosts->take($instagramMaxVisible);
+        $instagramHasMore = $instagramGridPosts->count() > $instagramInitialVisible;
     @endphp
 
     {{-- Hero section: full-bleed video with overlaid text (reference: graya.com.au) --}}
@@ -139,39 +162,44 @@
         </div>
     </section>
 
-    {{-- Instagram: live Graph API posts when configured, otherwise demo tiles. --}}
-    <section id="instagram" class="section section--instagram-demo" aria-labelledby="instagram-heading">
+    {{-- Instagram: image grid (3 per row), 12 visible by default, up to 30 with "More posts". --}}
+    <section id="instagram" class="section section--instagram-feed" aria-labelledby="instagram-heading">
         <div class="section__inner">
             <p class="section__label">Instagram</p>
             <h2 id="instagram-heading" class="section__title">KSB Luxury Homes</h2>
 
-            <div class="instagram-demo">
-                <div class="instagram-demo__carousel" aria-label="{{ $instagramLive ? 'Latest Instagram posts' : 'Instagram demo posts' }}">
-                    <div class="instagram-demo__viewport">
-                        <div class="instagram-demo__track">
-                            @foreach ($instagramPages as $page)
-                                <div class="instagram-demo__page">
-                                    @foreach ($page as $post)
-                                        <a
-                                            href="{{ $post['permalink'] }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="instagram-demo__tile"
-                                        >
-                                            <img
-                                                src="{{ $post['image'] }}"
-                                                alt="{{ \Illuminate\Support\Str::limit($post['caption'], 80) }}"
-                                                loading="lazy"
-                                            >
-                                        </a>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+            <div class="instagram-feed">
+                <a href="{{ $instagramProfileUrl }}" target="_blank" rel="noopener noreferrer" class="instagram-feed__account">
+                    <span class="instagram-feed__avatar" aria-hidden="true">KSB</span>
+                    <span class="instagram-feed__account-text">
+                        <strong>{{ $instagramHandle }}</strong>
+                        <span>View profile on Instagram</span>
+                    </span>
+                </a>
+
+                <div class="instagram-feed__grid" aria-label="Instagram posts">
+                    @foreach ($instagramGridPosts as $index => $post)
+                        <a
+                            href="{{ $post['permalink'] }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="instagram-feed__tile{{ $index >= $instagramInitialVisible ? ' instagram-feed__tile--more is-hidden' : '' }}"
+                        >
+                            <img
+                                src="{{ $post['image'] }}"
+                                alt="{{ \Illuminate\Support\Str::limit($post['alt'], 80) }}"
+                                loading="lazy"
+                            >
+                        </a>
+                    @endforeach
                 </div>
 
-                <div class="instagram-demo__actions">
+                <div class="instagram-feed__actions">
+                    @if ($instagramHasMore)
+                        <button type="button" class="btn btn--outline instagram-feed__more" id="instagramLoadMore">
+                            More posts
+                        </button>
+                    @endif
                     <a href="{{ $instagramProfileUrl }}" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
                         View on Instagram
                     </a>
@@ -181,30 +209,15 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const carousel = document.querySelector('.instagram-demo__carousel');
-                if (!carousel) return;
+                const loadMoreBtn = document.getElementById('instagramLoadMore');
+                if (!loadMoreBtn) return;
 
-                const viewport = carousel.querySelector('.instagram-demo__viewport');
-                const pages = carousel.querySelectorAll('.instagram-demo__page');
-                if (!viewport || !pages || pages.length < 2) return;
-
-                let index = 0;
-                let direction = 1;
-                const intervalMs = 4000;
-
-                setInterval(() => {
-                    if (index === pages.length - 1) {
-                        direction = -1;
-                    } else if (index === 0) {
-                        direction = 1;
-                    }
-
-                    index += direction;
-                    viewport.scrollTo({
-                        left: index * viewport.clientWidth,
-                        behavior: 'smooth'
+                loadMoreBtn.addEventListener('click', function () {
+                    document.querySelectorAll('.instagram-feed__tile--more.is-hidden').forEach(function (tile) {
+                        tile.classList.remove('is-hidden');
                     });
-                }, intervalMs);
+                    loadMoreBtn.style.display = 'none';
+                });
             });
         </script>
     </section>

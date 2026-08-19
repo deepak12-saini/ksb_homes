@@ -3,22 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class InstagramPost extends Model
 {
     protected $fillable = [
-        'caption',
-        'image',
         'instagram_url',
+        'embed_code',
+        'thumbnail_url',
+        'admin_note',
         'is_active',
         'sort_order',
-        'published_at',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'published_at' => 'datetime',
     ];
 
     public function scopeActive($query)
@@ -26,22 +24,17 @@ class InstagramPost extends Model
         return $query->where('is_active', true);
     }
 
-    public function imageUrl(): string
+    public function displayImageUrl(): string
     {
-        return asset('storage/'.$this->image);
-    }
-
-    public function deleteImageFile(): void
-    {
-        if ($this->image && Storage::disk('public')->exists($this->image)) {
-            Storage::disk('public')->delete($this->image);
+        if ($this->thumbnail_url) {
+            return $this->thumbnail_url;
         }
+
+        return route('media.instagram_post', $this, absolute: false);
     }
 
-    protected static function booted(): void
+    public function adminInputValue(): string
     {
-        static::deleting(function (InstagramPost $post): void {
-            $post->deleteImageFile();
-        });
+        return $this->embed_code ?: $this->instagram_url;
     }
 }

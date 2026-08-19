@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('instagram_posts', function (Blueprint $table) {
             $table->id();
-            $table->string('caption', 500)->nullable();
-            $table->string('image');
             $table->string('instagram_url', 500);
+            $table->text('embed_code')->nullable();
+            $table->string('thumbnail_url', 1000)->nullable();
+            $table->string('admin_note', 255)->nullable();
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('sort_order')->default(0);
-            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }

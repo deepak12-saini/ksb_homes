@@ -6,10 +6,15 @@ use App\Models\InstagramPost;
 use App\Models\PageContent;
 use App\Models\Project;
 use App\Services\InstagramFeedService;
+use App\Services\InstagramThumbnailService;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
+    public const INSTAGRAM_INITIAL_VISIBLE = 12;
+
+    public const INSTAGRAM_MAX_VISIBLE = 30;
+
     public function index(): View
     {
         $featuredProjects = Project::query()
@@ -31,28 +36,49 @@ class HomeController extends Controller
             'about_image' => null,
         ];
 
-        $manualInstagramPosts = InstagramPost::query()
+        $instagramProfileUrl = config('services.instagram.profile_url', 'https://www.instagram.com/ksbhomes_/');
+        $instagramHandle = $this->instagramHandleFromUrl($instagramProfileUrl);
+
+        $instagramFeedPosts = InstagramPost::query()
             ->active()
             ->orderBy('sort_order')
-            ->orderByDesc('published_at')
             ->orderByDesc('id')
-            ->limit(8)
-            ->get()
-            ->map(fn (InstagramPost $post): array => [
-                'id' => 'manual-'.$post->id,
-                'image' => $post->imageUrl(),
-                'permalink' => $post->instagram_url,
-                'caption' => $post->caption ?: 'KSB Luxury Homes on Instagram',
-                'media_type' => 'IMAGE',
-            ]);
+            ->limit(self::INSTAGRAM_MAX_VISIBLE)
+            ->get();
+
+        $thumbnailService = app(InstagramThumbnailService::class);
+        foreach ($instagramFeedPosts as $post) {
+            if ($post->thumbnail_url) {
+                continue;
+            }
+
+            $thumbnailUrl = $thumbnailService->fetchThumbnailUrl($post->instagram_url);
+            if ($thumbnailUrl) {
+                $post->update(['thumbnail_url' => $thumbnailUrl]);
+                $post->thumbnail_url = $thumbnailUrl;
+            }
+        }
 
         return view('home', [
             'featuredProjects' => $featuredProjects,
             'homeContent' => PageContent::getPageValues('home', $homeContentDefaults),
-            'instagramPosts' => $manualInstagramPosts->isNotEmpty()
-                ? $manualInstagramPosts
-                : app(InstagramFeedService::class)->latestPosts(8),
-            'instagramProfileUrl' => config('services.instagram.profile_url', 'https://www.instagram.com/ksbhomes_/'),
+            'instagramFeedPosts' => $instagramFeedPosts,
+            'instagramFallbackPosts' => $instagramFeedPosts->isNotEmpty()
+                ? collect()
+                : app(InstagramFeedService::class)->latestPosts(self::INSTAGRAM_MAX_VISIBLE),
+            'instagramProfileUrl' => $instagramProfileUrl,
+            'instagramHandle' => $instagramHandle,
+            'instagramInitialVisible' => self::INSTAGRAM_INITIAL_VISIBLE,
+            'instagramMaxVisible' => self::INSTAGRAM_MAX_VISIBLE,
         ]);
+    }
+
+    private function instagramHandleFromUrl(string $url): string
+    {
+        if (preg_match('~instagram\.com/([^/?#]+)~i', $url, $matches)) {
+            return '@'.ltrim($matches[1], '@');
+        }
+
+        return '@ksbhomes_';
     }
 }

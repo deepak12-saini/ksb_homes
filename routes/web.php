@@ -14,6 +14,7 @@ use App\Http\Controllers\KsbSelectController;
 use App\Http\Controllers\OurStoryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PublicInstagramImageController;
 use App\Http\Controllers\PublicProjectImageController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/media/projects/{filename}', [PublicProjectImageController::class, 'show'])
     ->where('filename', '[a-zA-Z0-9._-]+')
     ->name('media.project_image');
+
+Route::get('/media/instagram/{instagramPost}', [PublicInstagramImageController::class, 'show'])
+    ->name('media.instagram_post');
 
 Route::get('/sitemap.xml', function () {
     $staticPages = [
@@ -94,6 +98,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('projects', AdminProjectController::class)->except(['show']);
     Route::resource('instagram-posts', AdminInstagramPostController::class)->except(['show']);
+    Route::post('/instagram-posts/{instagram_post}/refresh-thumbnail', [AdminInstagramPostController::class, 'refreshThumbnail'])
+        ->name('instagram-posts.refresh-thumbnail');
     Route::get('/page-content/home', [AdminPageContentController::class, 'editHome'])->name('page-content.home.edit');
     Route::put('/page-content/home', [AdminPageContentController::class, 'updateHome'])->name('page-content.home.update');
     Route::get('/page-content/our-story', [AdminPageContentController::class, 'editOurStory'])->name('page-content.our-story.edit');

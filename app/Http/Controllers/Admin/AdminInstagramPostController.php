@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\InstagramPost;
+use App\Services\InstagramThumbnailService;
+use App\Support\InstagramEmbedParser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use InvalidArgumentException;
 
 class AdminInstagramPostController extends Controller
 {
@@ -18,12 +20,11 @@ class AdminInstagramPostController extends Controller
         $posts = InstagramPost::query()
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($inner) use ($search) {
-                    $inner->where('caption', 'like', '%'.$search.'%')
+                    $inner->where('admin_note', 'like', '%'.$search.'%')
                         ->orWhere('instagram_url', 'like', '%'.$search.'%');
                 });
             })
             ->orderBy('sort_order')
-            ->orderByDesc('published_at')
             ->orderByDesc('id')
             ->paginate(12)
             ->withQueryString();
@@ -42,19 +43,28 @@ class AdminInstagramPostController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'caption' => ['nullable', 'string', 'max:500'],
-            'image' => ['required', 'image', 'max:5120'],
-            'instagram_url' => ['required', 'url', 'max:500'],
+            'embed_input' => ['required', 'string', 'max:10000'],
+            'admin_note' => ['nullable', 'string', 'max:255'],
             'is_active' => ['boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'published_at' => ['nullable', 'date'],
         ]);
 
-        $validated['image'] = $request->file('image')->store('instagram-posts', 'public');
-        $validated['is_active'] = $request->boolean('is_active');
-        $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        try {
+            $parsed = InstagramEmbedParser::parse($validated['embed_input']);
+        } catch (InvalidArgumentException $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['embed_input' => $e->getMessage()]);
+        }
 
-        InstagramPost::create($validated);
+        InstagramPost::create([
+            'instagram_url' => $parsed['instagram_url'],
+            'embed_code' => $parsed['embed_code'],
+            'thumbnail_url' => app(InstagramThumbnailService::class)->fetchThumbnailUrl($parsed['instagram_url']),
+            'admin_note' => $validated['admin_note'] ?? null,
+            'is_active' => $request->boolean('is_active'),
+            'sort_order' => $validated['sort_order'] ?? 0,
+        ]);
 
         return redirect()->route('admin.instagram-posts.index')->with('success', 'Instagram post created.');
     }
@@ -69,27 +79,40 @@ class AdminInstagramPostController extends Controller
     public function update(Request $request, InstagramPost $instagramPost): RedirectResponse
     {
         $validated = $request->validate([
-            'caption' => ['nullable', 'string', 'max:500'],
-            'image' => ['nullable', 'image', 'max:5120'],
-            'instagram_url' => ['required', 'url', 'max:500'],
+            'embed_input' => ['nullable', 'string', 'max:10000'],
+            'admin_note' => ['nullable', 'string', 'max:255'],
             'is_active' => ['boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'published_at' => ['nullable', 'date'],
         ]);
 
-        $validated['is_active'] = $request->boolean('is_active');
-        $validated['sort_order'] = $validated['sort_order'] ?? $instagramPost->sort_order;
+        $update = [
+            'admin_note' => $validated['admin_note'] ?? null,
+            'is_active' => $request->boolean('is_active'),
+            'sort_order' => $validated['sort_order'] ?? $instagramPost->sort_order,
+        ];
 
-        if ($request->hasFile('image')) {
-            $oldImage = $instagramPost->image;
-            $validated['image'] = $request->file('image')->store('instagram-posts', 'public');
-
-            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
-                Storage::disk('public')->delete($oldImage);
+        if (! empty($validated['embed_input'])) {
+            try {
+                $parsed = InstagramEmbedParser::parse($validated['embed_input']);
+            } catch (InvalidArgumentException $e) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['embed_input' => $e->getMessage()]);
             }
+
+            $update['instagram_url'] = $parsed['instagram_url'];
+            $update['embed_code'] = $parsed['embed_code'];
+            $update['thumbnail_url'] = app(InstagramThumbnailService::class)->fetchThumbnailUrl($parsed['instagram_url']);
         }
 
-        $instagramPost->update($validated);
+        $instagramPost->update($update);
+
+        if (empty($instagramPost->fresh()->thumbnail_url)) {
+            $thumbnail = app(InstagramThumbnailService::class)->fetchThumbnailUrl($instagramPost->instagram_url);
+            if ($thumbnail) {
+                $instagramPost->update(['thumbnail_url' => $thumbnail]);
+            }
+        }
 
         return redirect()->route('admin.instagram-posts.edit', $instagramPost)->with('success', 'Instagram post updated.');
     }
@@ -99,5 +122,20 @@ class AdminInstagramPostController extends Controller
         $instagramPost->delete();
 
         return redirect()->route('admin.instagram-posts.index')->with('success', 'Instagram post deleted.');
+    }
+
+    public function refreshThumbnail(InstagramPost $instagramPost): RedirectResponse
+    {
+        $thumbnailUrl = app(InstagramThumbnailService::class)->fetchThumbnailUrl($instagramPost->instagram_url);
+
+        if ($thumbnailUrl) {
+            $instagramPost->update(['thumbnail_url' => $thumbnailUrl]);
+
+            return back()->with('success', 'Thumbnail refreshed.');
+        }
+
+        return back()->withErrors([
+            'embed_input' => 'Could not fetch thumbnail from Instagram. Check the post URL is public, or add INSTAGRAM_ACCESS_TOKEN in .env for reliable fetching.',
+        ]);
     }
 }
