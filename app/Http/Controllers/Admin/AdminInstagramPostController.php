@@ -60,7 +60,7 @@ class AdminInstagramPostController extends Controller
         InstagramPost::create([
             'instagram_url' => $parsed['instagram_url'],
             'embed_code' => $parsed['embed_code'],
-            'thumbnail_url' => app(InstagramThumbnailService::class)->fetchThumbnailUrl($parsed['instagram_url']),
+            'thumbnail_url' => app(InstagramThumbnailService::class)->storeLocalThumbnail($parsed['instagram_url']),
             'admin_note' => $validated['admin_note'] ?? null,
             'is_active' => $request->boolean('is_active'),
             'sort_order' => $validated['sort_order'] ?? 0,
@@ -102,15 +102,22 @@ class AdminInstagramPostController extends Controller
 
             $update['instagram_url'] = $parsed['instagram_url'];
             $update['embed_code'] = $parsed['embed_code'];
-            $update['thumbnail_url'] = app(InstagramThumbnailService::class)->fetchThumbnailUrl($parsed['instagram_url']);
+            $update['thumbnail_url'] = app(InstagramThumbnailService::class)->storeLocalThumbnail(
+                $parsed['instagram_url'],
+                $instagramPost->thumbnail_url
+            );
         }
 
         $instagramPost->update($update);
 
-        if (empty($instagramPost->fresh()->thumbnail_url)) {
-            $thumbnail = app(InstagramThumbnailService::class)->fetchThumbnailUrl($instagramPost->instagram_url);
+        $fresh = $instagramPost->fresh();
+        if ($fresh && ! $fresh->hasLocalThumbnail()) {
+            $thumbnail = app(InstagramThumbnailService::class)->storeLocalThumbnail(
+                $fresh->instagram_url,
+                $fresh->thumbnail_url
+            );
             if ($thumbnail) {
-                $instagramPost->update(['thumbnail_url' => $thumbnail]);
+                $fresh->update(['thumbnail_url' => $thumbnail]);
             }
         }
 
@@ -126,16 +133,19 @@ class AdminInstagramPostController extends Controller
 
     public function refreshThumbnail(InstagramPost $instagramPost): RedirectResponse
     {
-        $thumbnailUrl = app(InstagramThumbnailService::class)->fetchThumbnailUrl($instagramPost->instagram_url);
+        $thumbnailPath = app(InstagramThumbnailService::class)->storeLocalThumbnail(
+            $instagramPost->instagram_url,
+            $instagramPost->thumbnail_url
+        );
 
-        if ($thumbnailUrl) {
-            $instagramPost->update(['thumbnail_url' => $thumbnailUrl]);
+        if ($thumbnailPath) {
+            $instagramPost->update(['thumbnail_url' => $thumbnailPath]);
 
-            return back()->with('success', 'Thumbnail refreshed.');
+            return back()->with('success', 'Thumbnail downloaded and saved locally.');
         }
 
         return back()->withErrors([
-            'embed_input' => 'Could not fetch thumbnail from Instagram. Check the post URL is public, or add INSTAGRAM_ACCESS_TOKEN in .env for reliable fetching.',
+            'embed_input' => 'Could not download thumbnail from Instagram. Check the post URL is public, then try Refresh thumbnail again.',
         ]);
     }
 }

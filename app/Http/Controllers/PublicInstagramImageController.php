@@ -4,23 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\InstagramPost;
 use App\Services\InstagramThumbnailService;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PublicInstagramImageController extends Controller
 {
-    public function show(InstagramPost $instagramPost): RedirectResponse|BinaryFileResponse
+    public function show(InstagramPost $instagramPost): Response|StreamedResponse|BinaryFileResponse
     {
-        if ($instagramPost->thumbnail_url) {
-            return redirect()->away($instagramPost->thumbnail_url);
+        $service = app(InstagramThumbnailService::class);
+        $path = $service->ensureLocalThumbnail(
+            $instagramPost->instagram_url,
+            $instagramPost->thumbnail_url
+        );
+
+        if ($path && $path !== $instagramPost->thumbnail_url) {
+            $instagramPost->update(['thumbnail_url' => $path]);
         }
 
-        $thumbnailUrl = app(InstagramThumbnailService::class)->fetchThumbnailUrl($instagramPost->instagram_url);
-
-        if ($thumbnailUrl) {
-            $instagramPost->update(['thumbnail_url' => $thumbnailUrl]);
-
-            return redirect()->away($thumbnailUrl);
+        if ($path && Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->response($path);
         }
 
         return response()->file(public_path('assets/images/instagram-placeholder.svg'));

@@ -2,7 +2,7 @@
     <div class="admin-card__head">
         <div>
             <h2>{{ isset($post) ? 'Edit Instagram post' : 'Add Instagram post' }}</h2>
-            <p class="admin-muted" style="margin: 0.2rem 0 0;">Paste an Instagram embed code or post URL. No image upload needed.</p>
+            <p class="admin-muted" style="margin: 0.2rem 0 0;">Paste an Instagram embed code or post URL. The image is downloaded and stored on this server so it will not expire.</p>
         </div>
     </div>
 

@@ -4,10 +4,66 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Throwable;
 
 class InstagramThumbnailService
 {
+    /**
+     * Fetch Instagram thumbnail, download it, and store permanently on local disk.
+     * Returns a relative public-disk path such as "instagram-posts/abc.jpg".
+     */
+    public function storeLocalThumbnail(string $permalink, ?string $existingPath = null): ?string
+    {
+        $remoteUrl = $this->fetchThumbnailUrl($permalink);
+
+        if (! $remoteUrl) {
+            return null;
+        }
+
+        $localPath = $this->downloadToLocal($remoteUrl, $permalink);
+
+        if (! $localPath) {
+            return null;
+        }
+
+        if ($existingPath && $existingPath !== $localPath && $this->isLocalPath($existingPath)) {
+            $this->deleteLocalFile($existingPath);
+        }
+
+        return $localPath;
+    }
+
+    /**
+     * If value is a remote CDN URL, download and replace with a local path.
+     * If already local and file exists, keep it. If local but missing, re-fetch.
+     */
+    public function ensureLocalThumbnail(string $permalink, ?string $currentValue): ?string
+    {
+        if ($currentValue && $this->isLocalPath($currentValue) && Storage::disk('public')->exists($currentValue)) {
+            return $currentValue;
+        }
+
+        return $this->storeLocalThumbnail($permalink, $this->isLocalPath((string) $currentValue) ? $currentValue : null);
+    }
+
+    public function isLocalPath(?string $value): bool
+    {
+        if (! $value) {
+            return false;
+        }
+
+        return ! str_starts_with($value, 'http://') && ! str_starts_with($value, 'https://');
+    }
+
+    public function deleteLocalFile(?string $path): void
+    {
+        if ($path && $this->isLocalPath($path) && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+    }
+
     public function fetchThumbnailUrl(string $permalink): ?string
     {
         $permalink = rtrim(trim($permalink), '/').'/';
@@ -43,6 +99,85 @@ class InstagramThumbnailService
         }
 
         return null;
+    }
+
+    private function downloadToLocal(string $remoteUrl, string $permalink): ?string
+    {
+        try {
+            $response = Http::timeout(20)
+                ->withHeaders($this->browserHeaders())
+                ->withOptions(['allow_redirects' => true])
+                ->get($remoteUrl);
+
+            if (! $response->successful()) {
+                return null;
+            }
+
+            $contentType = strtolower((string) $response->header('Content-Type'));
+            $body = $response->body();
+
+            if ($body === '' || strlen($body) < 100) {
+                return null;
+            }
+
+            // Reject HTML login walls pretending to be images.
+            if (str_contains($contentType, 'text/html') || str_starts_with(ltrim($body), '<')) {
+                return null;
+            }
+
+            $extension = $this->extensionFromContentType($contentType)
+                ?? $this->extensionFromUrl($remoteUrl)
+                ?? 'jpg';
+
+            $shortcode = $this->extractShortcode($permalink) ?: Str::random(10);
+            $filename = $shortcode.'-'.Str::lower(Str::random(8)).'.'.$extension;
+            $path = 'instagram-posts/'.$filename;
+
+            Storage::disk('public')->put($path, $body);
+
+            return $path;
+        } catch (Throwable $e) {
+            Log::warning('Instagram thumbnail download failed.', [
+                'permalink' => $permalink,
+                'remote' => $remoteUrl,
+                'error' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
+    }
+
+    private function extensionFromContentType(string $contentType): ?string
+    {
+        $map = [
+            'image/jpeg' => 'jpg',
+            'image/jpg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+        ];
+
+        foreach ($map as $mime => $ext) {
+            if (str_contains($contentType, $mime)) {
+                return $ext;
+            }
+        }
+
+        return null;
+    }
+
+    private function extensionFromUrl(string $url): ?string
+    {
+        $path = parse_url($url, PHP_URL_PATH);
+        if (! is_string($path)) {
+            return null;
+        }
+
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        return in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)
+            ? ($ext === 'jpeg' ? 'jpg' : $ext)
+            : null;
     }
 
     private function fetchFromGraphOembed(string $permalink): ?string

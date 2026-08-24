@@ -48,14 +48,15 @@ class HomeController extends Controller
 
         $thumbnailService = app(InstagramThumbnailService::class);
         foreach ($instagramFeedPosts as $post) {
-            if ($post->thumbnail_url) {
+            // Keep local files as-is. Convert missing or expired CDN URLs to local storage.
+            if ($post->hasLocalThumbnail()) {
                 continue;
             }
 
-            $thumbnailUrl = $thumbnailService->fetchThumbnailUrl($post->instagram_url);
-            if ($thumbnailUrl) {
-                $post->update(['thumbnail_url' => $thumbnailUrl]);
-                $post->thumbnail_url = $thumbnailUrl;
+            $localPath = $thumbnailService->ensureLocalThumbnail($post->instagram_url, $post->thumbnail_url);
+            if ($localPath) {
+                $post->update(['thumbnail_url' => $localPath]);
+                $post->thumbnail_url = $localPath;
             }
         }
 
