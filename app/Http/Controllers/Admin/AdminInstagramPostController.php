@@ -26,7 +26,7 @@ class AdminInstagramPostController extends Controller
             })
             ->orderBy('sort_order')
             ->orderByDesc('id')
-            ->paginate(12)
+            ->paginate(10)
             ->withQueryString();
 
         return view('admin.instagram-posts.index', [
