@@ -24,7 +24,7 @@ class AdminInstagramPostController extends Controller
                         ->orWhere('instagram_url', 'like', '%'.$search.'%');
                 });
             })
-            ->orderBy('sort_order')
+            ->orderByDesc('sort_order')
             ->orderByDesc('id')
             ->paginate(10)
             ->withQueryString();
